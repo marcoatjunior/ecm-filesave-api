@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "name": "ecm-filesave.com",
+      "script": "dist/main.js",
+      "instances": 0,
+      "exec_mode": "cluster"
+    }
+  ]
+}

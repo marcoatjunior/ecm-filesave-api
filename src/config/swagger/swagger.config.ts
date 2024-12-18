@@ -6,4 +6,5 @@ export const swaggerConfiguration: Omit<OpenAPIObject, 'paths'> =
     .setTitle(api.titulo)
     .setDescription(api.descricao)
     .setVersion(api.versao)
+    .setTermsOfService("teste docker watch")
     .build();
