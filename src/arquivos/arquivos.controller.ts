@@ -1,6 +1,6 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Permissions } from 'src/authentication/decorators';
 import { ArquivosService } from './arquivos.service';
 
 @ApiTags('Arquivos')
@@ -9,15 +9,9 @@ export class ArquivosController {
   constructor(private readonly service: ArquivosService) {}
 
   @Get()
+  @Permissions('read:arquivos')
   @ApiOperation({ summary: 'Lista arquivos no repositório Alfresco ECM' })
-  findAll() {
-    return this.service.findAll();
-  }
-
-  @Get(':id')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiOperation({ summary: 'Consulta arquivo no repositório Alfresco ECM' })
-  findOne(@Param('id') id: string) {
-    return this.service.findOne(+id);
+  lista() {
+    return this.service.lista();
   }
 }
