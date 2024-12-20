@@ -16,6 +16,7 @@ import { api } from 'src/common/resources';
 const localhost: string = `localhost:${process.env.PORT}`;
 const basePath: string = 'docs';
 
+const authorizationUrl: string = `${process.env.AUTH0_DOMAIN}/authorize?audience=${process.env.AUTH0_AUDIENCE}`;
 const serverUrl: string = `${process.env.AMBIENTE === 'local' ? localhost : process.env.AUTH0_AUDIENCE}`;
 
 const serverVariables: Record<string, ServerVariableObject> = {
@@ -23,18 +24,26 @@ const serverVariables: Record<string, ServerVariableObject> = {
 };
 
 const securityScheme: SecuritySchemeObject = {
-  in: 'header',
-  type: 'openIdConnect',
+  type: 'oauth2',
+  flows: {
+    implicit: {
+      authorizationUrl,
+      tokenUrl: `${process.env.AUTH0_AUDIENCE}`,
+      scopes: {
+        openid: 'Open Id',
+        profile: 'Profile',
+        email: 'E-mail',
+      },
+    },
+  },
   scheme: 'bearer',
   bearerFormat: 'JWT',
-  name: 'Bearer',
-  openIdConnectUrl: `${process.env.AUTH0_ISSUER_URL}/.well-known/openid-configuration`,
+  in: 'header',
 };
 
 const uiOptions: SwaggerUiOptions = {
   initOAuth: {
     clientId: process.env.AUTH0_CLIENT_ID,
-    clientSecret: process.env.AUTH0_CLIENT_SECRET,
     scopes: ['openid', 'profile', 'email'],
   },
   oauth2RedirectUrl: `http://${serverUrl}/${process.env.API_PREFIXO}/${basePath}/oauth2-redirect.html`,
@@ -59,8 +68,8 @@ const builder: Omit<OpenAPIObject, 'paths'> = new DocumentBuilder()
     null,
     serverVariables,
   )
-  .addSecurity('openId', securityScheme)
-  .addSecurityRequirements('openId')
+  .addSecurityRequirements('Auth0')
+  .addOAuth2(securityScheme, 'Auth0')
   .build();
 
 const criaDocumento = (app: INestApplication): OpenAPIObject =>
