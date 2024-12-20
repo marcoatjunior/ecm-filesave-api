@@ -26,7 +26,8 @@ const securityScheme: SecuritySchemeObject = {
   in: 'header',
   type: 'openIdConnect',
   scheme: 'bearer',
-  bearerFormat: 'Bearer',
+  bearerFormat: 'JWT',
+  name: 'Bearer',
   openIdConnectUrl: `${process.env.AUTH0_ISSUER_URL}/.well-known/openid-configuration`,
 };
 
@@ -34,7 +35,7 @@ const uiOptions: SwaggerUiOptions = {
   initOAuth: {
     clientId: process.env.AUTH0_CLIENT_ID,
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
-    scopes: ['openid'],
+    scopes: ['openid', 'profile', 'email'],
   },
   oauth2RedirectUrl: `http://${serverUrl}/${process.env.API_PREFIXO}/${basePath}/oauth2-redirect.html`,
 };
@@ -59,6 +60,7 @@ const builder: Omit<OpenAPIObject, 'paths'> = new DocumentBuilder()
     serverVariables,
   )
   .addSecurity('openId', securityScheme)
+  .addSecurityRequirements('openId')
   .build();
 
 const criaDocumento = (app: INestApplication): OpenAPIObject =>
