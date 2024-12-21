@@ -6,22 +6,14 @@ import {
   SwaggerDocumentOptions,
   SwaggerModule,
 } from '@nestjs/swagger';
-import {
-  SecuritySchemeObject,
-  ServerVariableObject,
-} from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import { SecuritySchemeObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 import { SwaggerUiOptions } from '@nestjs/swagger/dist/interfaces/swagger-ui-options.interface';
 import { api } from 'src/common/resources';
 
-const localhost: string = `localhost:${process.env.PORT}`;
 const basePath: string = 'docs';
-
-const authorizationUrl: string = `${process.env.AUTH0_DOMAIN}/authorize?audience=${process.env.AUTH0_AUDIENCE}`;
-const serverUrl: string = `${process.env.AMBIENTE === 'local' ? localhost : process.env.AUTH0_AUDIENCE}`;
-
-const serverVariables: Record<string, ServerVariableObject> = {
-  protocolo: { enum: ['http', 'https'], default: 'http' },
-};
+const audienceUrl: string = `audience=${process.env.AUTH0_AUDIENCE}`;
+const authorizationUrl: string = `${process.env.AUTH0_DOMAIN}authorize?${audienceUrl}`;
+const redirectUrl: string = `${process.env.AUTH0_AUDIENCE}/${basePath}/oauth2-redirect.html`;
 
 const securityScheme: SecuritySchemeObject = {
   type: 'oauth2',
@@ -44,9 +36,10 @@ const securityScheme: SecuritySchemeObject = {
 const uiOptions: SwaggerUiOptions = {
   initOAuth: {
     clientId: process.env.AUTH0_CLIENT_ID,
+    clientSecret: process.env.AUTH0_CLIENT_SECRET,
     scopes: ['openid', 'profile', 'email'],
   },
-  oauth2RedirectUrl: `http://${serverUrl}/${process.env.API_PREFIXO}/${basePath}/oauth2-redirect.html`,
+  oauth2RedirectUrl: redirectUrl,
 };
 
 const documentOptions: SwaggerDocumentOptions = {
@@ -63,11 +56,7 @@ const builder: Omit<OpenAPIObject, 'paths'> = new DocumentBuilder()
   .setTitle(api.titulo)
   .setDescription(api.descricao)
   .setVersion(require('../../../package.json').version || '')
-  .addServer(
-    `{protocolo}://${serverUrl}/${process.env.API_PREFIXO}`,
-    null,
-    serverVariables,
-  )
+  .addServer(process.env.AUTH0_AUDIENCE)
   .addSecurityRequirements('Auth0')
   .addOAuth2(securityScheme, 'Auth0')
   .build();
