@@ -1,27 +1,17 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import * as dotenv from 'dotenv';
-import { passportJwtSecret } from 'jwks-rsa';
-import { ExtractJwt, Strategy } from 'passport-jwt';
+import { Strategy } from 'passport-jwt';
+import { excecoes } from 'src/common/resources';
 import { JwtPayload } from '../interfaces/jwt-payload.interface';
+import { passportProvider } from '../providers/passport.provider';
 
 dotenv.config();
 
 @Injectable()
 export class AuthenticationStrategy extends PassportStrategy(Strategy) {
   constructor() {
-    super({
-      secretOrKeyProvider: passportJwtSecret({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 5,
-        jwksUri: `${process.env.DOMAIN}/.well-known/jwks.json`,
-      }),
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      audience: process.env.AUTH0_AUDIENCE,
-      issuer: `${process.env.DOMAIN}/`,
-      algorithms: ['RS256'],
-    });
+    super(passportProvider());
   }
 
   validate(payload: JwtPayload): JwtPayload {
@@ -32,9 +22,7 @@ export class AuthenticationStrategy extends PassportStrategy(Strategy) {
         ?.split(' ')
         .filter((scope) => minimumScope.indexOf(scope) > -1).length !== 3
     ) {
-      throw new UnauthorizedException(
-        'JWT não possui o escopo obrigatório (`openid profile email`).',
-      );
+      throw new UnauthorizedException(excecoes.tokenInvalido);
     }
 
     return payload;

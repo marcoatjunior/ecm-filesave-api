@@ -9,7 +9,7 @@ export class ArquivosController {
   constructor(private readonly service: ArquivosService) {}
 
   @Get()
-  @Permissions('read:arquivos')
+  @Permissions('lista:arquivos')
   @ApiOperation({ summary: 'Lista arquivos no repositório Alfresco ECM' })
   lista() {
     return this.service.lista();

@@ -1,6 +1,12 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
+import { excecoes } from 'src/common/resources';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
@@ -9,22 +15,33 @@ export class PermissionsGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
+    const userPermissions = context.getArgs()[0].user.permissions;
+
+    if (!userPermissions) {
+      throw new ForbiddenException(
+        `Usuário não possui autorização de acesso ao sistema.`,
+      );
+    }
+
     const routePermissions = this.reflector.get<string[]>(
       'permissions',
       context.getHandler(),
     );
 
-    const userPermissions = context.getArgs()[0].user.permissions;
-
     if (!routePermissions) {
       return true;
     }
 
-    const hasPermission = () =>
+    if (
       routePermissions.every((routePermission) =>
         userPermissions.includes(routePermission),
-      );
+      )
+    ) {
+      return true;
+    }
 
-    return hasPermission();
+    throw new ForbiddenException(
+      `${excecoes.semPermissao} (${routePermissions})`,
+    );
   }
 }

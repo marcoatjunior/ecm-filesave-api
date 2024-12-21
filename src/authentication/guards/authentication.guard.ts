@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
+import { excecoes } from 'src/common/resources';
 
 @Injectable()
 export class AuthenticationGuard extends AuthGuard('jwt') {
@@ -25,15 +26,9 @@ export class AuthenticationGuard extends AuthGuard('jwt') {
     return super.canActivate(context);
   }
 
-  handleRequest(err, user, info) {
-    console.log(info);
+  handleRequest(err, user) {
     if (err || !user) {
-      throw (
-        err ||
-        new UnauthorizedException(
-          'O usuário deve estar autenticado para realizar esta ação.',
-        )
-      );
+      throw err || new UnauthorizedException(excecoes.naoAutenticado);
     }
     return user;
   }
