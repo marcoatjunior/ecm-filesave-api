@@ -25,6 +25,34 @@ export class AlfrescoNodeService {
     );
   }
 
+  upload(nome: string): Promise<Node> {
+    return new Promise<Node>((resolve) =>
+      this.http
+        .post<Node>(
+          `${this.montaUrl(process.env.ALFRESCO_ID_FAMILIA)}/children`,
+          { name: nome, nodeType: 'cm:content' },
+        )
+        .subscribe({
+          next: ({ data }) => resolve(data),
+        }),
+    );
+  }
+
+  atualizaConteudo(id: string, buffer: Buffer<ArrayBufferLike>): Promise<Node> {
+    return new Promise<Node>((resolve) =>
+      this.http
+        .put<Node>(`${this.montaUrl(id)}/content`, buffer, {
+          headers: {
+            'Content-Type': 'application/pdf',
+          },
+        })
+        .subscribe({
+          next: ({ data }) => resolve(data),
+          error: (error) => console.log('eqwewqeeq', error.response.data),
+        }),
+    );
+  }
+
   private montaUrl(id?: string): string {
     if (!id) {
       return `${process.env.ALFRESCO_SERVICES_URL}/nodes`;
