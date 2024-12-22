@@ -8,13 +8,16 @@ import { TicketRequest, TicketResponse } from '../interfaces';
 export class AlfrescoAuthService {
   constructor(private http: HttpService) {}
 
-  getTicket(): Observable<TicketResponse> {
+  geraTicket(): Observable<TicketResponse> {
     return this.http
-      .post(`${process.env.ALFRESCO_AUTH_URL}/tickets`, this.getBody())
-      .pipe(map((response: AxiosResponse) => response.data));
+      .post<TicketResponse>(
+        `${process.env.ALFRESCO_AUTH_URL}/tickets`,
+        this.getRequestBody(),
+      )
+      .pipe(map((response: AxiosResponse<TicketResponse>) => response.data));
   }
 
-  private getBody(): TicketRequest {
+  private getRequestBody(): TicketRequest {
     return {
       userId: process.env.ALFRESCO_AUTH_USERNAME,
       password: process.env.ALFRESCO_AUTH_PASSWORD,

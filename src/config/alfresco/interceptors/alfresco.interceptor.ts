@@ -25,7 +25,7 @@ export class AlfrescoInterceptor implements NestInterceptor {
   }
 
   private populaAccessToken(): void {
-    lastValueFrom(this.authService.getTicket()).then((ticket) => {
+    lastValueFrom(this.authService.geraTicket()).then((ticket) => {
       axios.defaults.headers.common['Authorization'] =
         `Basic ${btoa(ticket.entry.id)}`;
     });

@@ -9,10 +9,8 @@ export class AlfrescoNodeService {
   constructor(private http: HttpService) {}
 
   consulta(id: string): Observable<Node> {
-    const a = this.http
-      .get(`${process.env.ALFRESCO_SERVICES_URL}/nodes/${id}`);
-      a.subscribe(() => {}, (err) => console.log(err))
-      
-      return a.pipe(map((response: AxiosResponse) => response.data));
+    return this.http
+      .get<Node>(`${process.env.ALFRESCO_SERVICES_URL}/nodes/${id}`)
+      .pipe(map((response: AxiosResponse<Node>) => response.data));
   }
 }
