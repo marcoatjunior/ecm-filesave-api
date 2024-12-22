@@ -1,7 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
-import { Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { AlfrescoInterceptor } from 'src/config/alfresco/interceptors';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { AlfrescoMiddleware } from 'src/config/alfresco/middleware';
 import {
   AlfrescoAuthService,
   AlfrescoNodeService,
@@ -11,13 +10,10 @@ import { ArquivosController } from './arquivos.controller';
 @Module({
   imports: [HttpModule],
   controllers: [ArquivosController],
-  providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: AlfrescoInterceptor,
-    },
-    AlfrescoAuthService,
-    AlfrescoNodeService,
-  ],
+  providers: [AlfrescoAuthService, AlfrescoNodeService],
 })
-export class ArquivosModule {}
+export class ArquivosModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AlfrescoMiddleware).forRoutes(ArquivosController);
+  }
+}
