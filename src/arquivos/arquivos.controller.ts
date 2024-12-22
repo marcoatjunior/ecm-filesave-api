@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Header,
   HttpCode,
@@ -12,7 +13,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiConsumes,
+  ApiOperation,
+  ApiProduces,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import { Permissions } from 'src/authentication/decorators';
 import { arquivos } from 'src/common/resources';
@@ -35,7 +41,7 @@ export class ArquivosController {
   }
 
   @Get(':id/download')
-  @Header('Content-Type', 'application/pdf')
+  @Header('Content-Disposition', 'attachment; filename=download.pdf')
   @Permissions(permissoesArquivos.consulta)
   @ApiOperation({ summary: arquivos.download })
   async download(@Param('id') id: string): Promise<StreamableFile> {
@@ -45,8 +51,8 @@ export class ArquivosController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @Permissions(permissoesArquivos.inclui)
   @ApiConsumes('multipart/form-data')
+  @Permissions(permissoesArquivos.inclui)
   @ApiOperation({ summary: arquivos.upload })
   @UseInterceptors(FileInterceptor('arquivo'))
   async upload(
@@ -57,5 +63,13 @@ export class ArquivosController {
     const { originalname, buffer } = arquivo;
     const { entry } = await this.service.upload(originalname);
     return this.service.atualizaConteudo(entry.id, buffer);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Permissions(permissoesArquivos.exclui)
+  @ApiOperation({ summary: arquivos.exclui })
+  exclui(@Param('id') id: string): void {
+    this.service.exclui(id);
   }
 }

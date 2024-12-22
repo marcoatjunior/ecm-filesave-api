@@ -7,6 +7,7 @@ export const arquivos = {
   consulta: 'Consulta informações de um arquivo no repositório Alfresco ECM',
   download: 'Download de arquivo no repositório Alfresco ECM',
   upload: 'Upload de arquivo no repositório Alfresco ECM',
+  exclui: 'Exclui arquivo no repositório Alfresco ECM',
 };
 
 export const excecoes = {
