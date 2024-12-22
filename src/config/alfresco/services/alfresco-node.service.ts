@@ -32,9 +32,7 @@ export class AlfrescoNodeService {
           `${this.montaUrl(process.env.ALFRESCO_ID_FAMILIA)}/children`,
           { name: nome, nodeType: 'cm:content' },
         )
-        .subscribe({
-          next: ({ data }) => resolve(data),
-        }),
+        .subscribe({ next: ({ data }) => resolve(data) }),
     );
   }
 
@@ -42,9 +40,7 @@ export class AlfrescoNodeService {
     return new Promise<Node>((resolve) =>
       this.http
         .put<Node>(`${this.montaUrl(id)}/content`, buffer, {
-          headers: {
-            'Content-Type': 'application/pdf',
-          },
+          headers: { 'Content-Type': 'application/pdf' },
         })
         .subscribe({
           next: ({ data }) => resolve(data),
@@ -53,10 +49,17 @@ export class AlfrescoNodeService {
     );
   }
 
+  exclui(id: string): Promise<{}> {
+    return new Promise<{}>(() =>
+      this.http
+        .delete<{}>(`${this.montaUrl(id)}`)
+        .subscribe({ next: () => {} }),
+    );
+  }
+
   private montaUrl(id?: string): string {
-    if (!id) {
-      return `${process.env.ALFRESCO_SERVICES_URL}/nodes`;
-    }
-    return `${process.env.ALFRESCO_SERVICES_URL}/nodes/${id}`;
+    return !id
+      ? `${process.env.ALFRESCO_SERVICES_URL}/nodes`
+      : `${process.env.ALFRESCO_SERVICES_URL}/nodes/${id}`;
   }
 }
