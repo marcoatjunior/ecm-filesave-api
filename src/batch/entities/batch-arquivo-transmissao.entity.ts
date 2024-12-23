@@ -1,9 +1,9 @@
-import { AuditableEntity } from 'src/common/entities';
+import { BaseEntity } from 'src/common/entities';
 import { SituacaoBatchEnum } from 'src/solicitacoes/enums';
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'BATCH_ARQUIVO_TRANSMISSAO' })
-export class BatchArquivoTransmissaoEntity {
+export class BatchArquivoTransmissaoEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   @PrimaryColumn({
     name: 'ID',
@@ -43,7 +43,4 @@ export class BatchArquivoTransmissaoEntity {
     comment: 'Log de execução da rotina batch',
   })
   logExecucao: Array<any>;
-
-  @Column(() => AuditableEntity, { prefix: false })
-  auditable: AuditableEntity;
 }

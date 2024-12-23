@@ -1,8 +1,8 @@
-import { AuditableEntity, InformacoesEntity } from 'src/common/entities';
+import { BaseEntity, InformacoesEntity } from 'src/common/entities';
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'ARQUIVO_CONTEUDO' })
-export class ArquivoConteudoEntity {
+export class ArquivoConteudoEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   @PrimaryColumn({
     name: 'ID',
@@ -40,7 +40,4 @@ export class ArquivoConteudoEntity {
 
   @Column(() => InformacoesEntity, { prefix: false })
   informacoes: InformacoesEntity;
-
-  @Column(() => AuditableEntity, { prefix: false })
-  auditable: AuditableEntity;
 }

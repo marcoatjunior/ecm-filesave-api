@@ -25,12 +25,12 @@ export class AlfrescoNodeService {
     );
   }
 
-  upload(nome: string): Promise<Node> {
+  upload(nome: string, diretorio: string): Promise<Node> {
     return new Promise<Node>((resolve) =>
       this.http
         .post<Node>(
           `${this.montaUrl(process.env.ALFRESCO_ID_FAMILIA)}/children`,
-          { name: nome, nodeType: 'cm:content' },
+          { name: nome, nodeType: 'cm:content', relativePath: diretorio },
         )
         .subscribe({ next: ({ data }) => resolve(data) }),
     );
@@ -42,10 +42,7 @@ export class AlfrescoNodeService {
         .put<Node>(`${this.montaUrl(id)}/content`, buffer, {
           headers: { 'Content-Type': 'application/pdf' },
         })
-        .subscribe({
-          next: ({ data }) => resolve(data),
-          error: (error) => console.log('eqwewqeeq', error.response.data),
-        }),
+        .subscribe({ next: ({ data }) => resolve(data) }),
     );
   }
 

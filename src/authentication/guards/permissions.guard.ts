@@ -18,9 +18,7 @@ export class PermissionsGuard implements CanActivate {
     const userPermissions = context.getArgs()[0].user.permissions;
 
     if (!userPermissions) {
-      throw new ForbiddenException(
-        `Usuário não possui autorização de acesso ao sistema.`,
-      );
+      throw new ForbiddenException(excecoes.semAutorizacao);
     }
 
     const routePermissions = this.reflector.get<string[]>(

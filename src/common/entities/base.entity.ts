@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-export abstract class AuditableEntity {
+export abstract class BaseEntity {
   @Column({
     name: 'USUARIO_CRIACAO',
     length: 300,
