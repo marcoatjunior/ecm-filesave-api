@@ -55,7 +55,7 @@ const customOptions: SwaggerCustomOptions = {
 const builder: Omit<OpenAPIObject, 'paths'> = new DocumentBuilder()
   .setTitle(api.titulo)
   .setDescription(api.descricao)
-  .setVersion(require('../../../package.json').version || '')
+  .setVersion('0.6.0')
   .addServer(process.env.AUTH0_AUDIENCE)
   .addSecurityRequirements('Auth0')
   .addOAuth2(securityScheme, 'Auth0')

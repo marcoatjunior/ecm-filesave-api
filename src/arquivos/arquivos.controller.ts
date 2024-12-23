@@ -26,7 +26,7 @@ import { permissoesArquivos } from 'src/common/resources/permissoes.resources';
 import { arquivoPdfValidator } from 'src/common/validators';
 import { Node } from 'src/config/alfresco/interfaces';
 import { AlfrescoNodeService } from 'src/config/alfresco/services';
-import { Arquivo } from './entities/arquivo.entity';
+import { Arquivo } from './interfaces/arquivo.interface';
 
 @ApiTags('Arquivos')
 @Controller('arquivos')
