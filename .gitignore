@@ -132,4 +132,3 @@ dist
 # orm
 nodemon.json
 ormconfig.ts
-ormsync.ts

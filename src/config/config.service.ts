@@ -39,7 +39,7 @@ class ConfigService {
       password: this.getValue('POSTGRES_PASSWORD'),
       database: this.getValue('POSTGRES_DATABASE'),
       entities: [ArquivoEntity],
-      migrationsTableName: 'migrations',
+      migrationsTableName: 'MIGRATIONS',
       migrations: ['src/migrations/*.ts'],
       synchronize: true,
       ssl: this.isProduction(),
