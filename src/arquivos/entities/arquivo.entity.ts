@@ -1,15 +1,15 @@
 import { BaseEntity } from 'src/common/entities';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'arquivo' })
-export class Arquivo extends BaseEntity {
+export class ArquivoEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
-  @Column({ type: 'number', length: 9 })
+  @PrimaryColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 80 })
+  @Column({ length: 80 })
   idEcm: string;
 
-  @Column({ type: 'varchar', length: 300 })
+  @Column({ length: 300 })
   nome: string;
 }
