@@ -2,7 +2,12 @@ import { InternalServerErrorException } from '@nestjs/common';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import { ArquivoConteudoEntity, ArquivoEntity } from 'src/arquivos/entities';
+import { BatchArquivoTransmissaoEntity } from 'src/batch/entities/batch-arquivo-transmissao.entity';
 import { excecoes } from 'src/common/resources';
+import {
+  SolicitacaoArquivoEntity,
+  SolicitacaoEntity,
+} from 'src/solicitacoes/entities';
 
 dotenv.config();
 
@@ -38,10 +43,16 @@ class ConfigService {
       username: this.getValue('POSTGRES_USER'),
       password: this.getValue('POSTGRES_PASSWORD'),
       database: this.getValue('POSTGRES_DATABASE'),
-      entities: [ArquivoEntity, ArquivoConteudoEntity],
+      entities: [
+        ArquivoEntity,
+        ArquivoConteudoEntity,
+        BatchArquivoTransmissaoEntity,
+        SolicitacaoEntity,
+        SolicitacaoArquivoEntity,
+      ],
       migrationsTableName: 'MIGRATIONS',
       migrations: ['src/migrations/*.ts'],
-      synchronize: true,
+      synchronize: false,
       ssl: this.isProduction(),
     };
   }
@@ -56,4 +67,3 @@ const configService = new ConfigService(process.env).ensureValues([
 ]);
 
 export { configService };
-

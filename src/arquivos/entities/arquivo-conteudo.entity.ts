@@ -1,4 +1,4 @@
-import { AuditableEntity } from 'src/common/entities';
+import { AuditableEntity, InformacoesEntity } from 'src/common/entities';
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'ARQUIVO_CONTEUDO' })
@@ -38,28 +38,8 @@ export class ArquivoConteudoEntity {
   })
   sistema: string;
 
-  @Column({
-    name: 'NOME',
-    length: 300,
-    comment: 'Nome do arquivo para o sistema cliente',
-  })
-  nome: string;
-
-  @Column({
-    name: 'TIPO',
-    length: 50,
-    comment: 'Tipo do arquivo para o sistema cliente',
-  })
-  tipo: string;
-
-  @Column({
-    name: 'EXTRAS',
-    type: 'jsonb',
-    array: false,
-    default: () => "'[]'",
-    comment: 'Propriedades extras (JSON) do arquivo para o sistema cliente',
-  })
-  extras: Array<any>;
+  @Column(() => InformacoesEntity, { prefix: false })
+  informacoes: InformacoesEntity;
 
   @Column(() => AuditableEntity, { prefix: false })
   auditable: AuditableEntity;
