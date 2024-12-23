@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import * as dotenv from 'dotenv';
 import { Strategy } from 'passport-jwt';
 import { excecoes } from 'src/common/resources';
-import { JwtPayload } from '../interfaces/jwt-payload.interface';
+import { JwtPayload } from '../models/jwt-payload.interface';
 import { passportProvider } from '../providers/passport.provider';
 
 dotenv.config();

@@ -21,18 +21,23 @@ import { permissoesArquivos } from 'src/common/resources/permissoes.resources';
 import { arquivoPdfValidator } from 'src/common/validators';
 import { Node } from 'src/config/alfresco/interfaces';
 import { AlfrescoNodeService } from 'src/config/alfresco/services';
-import { Arquivo } from '../interfaces/arquivo.interface';
+import { ArquivoInclusaoModel } from '../models';
+import { ArquivosConteudoService, ArquivosService } from '../services';
 
 @ApiTags('Arquivos')
 @Controller('arquivos')
 export class ArquivosController {
-  constructor(private readonly service: AlfrescoNodeService) {}
+  constructor(
+    private service: ArquivosService,
+    private conteudoService: ArquivosConteudoService,
+    private alfrescoService: AlfrescoNodeService,
+  ) {}
 
   @Get(':id')
   @Permissions(permissoesArquivos.consulta)
   @ApiOperation({ summary: arquivos.consulta })
   consulta(@Param('id') id: string): Observable<Node> {
-    return this.service.consulta(id);
+    return this.alfrescoService.consulta(id);
   }
 
   @Get(':id/download')
@@ -40,7 +45,7 @@ export class ArquivosController {
   @Permissions(permissoesArquivos.consulta)
   @ApiOperation({ summary: arquivos.download })
   async download(@Param('id') id: string): Promise<StreamableFile> {
-    const stream = await this.service.download(id);
+    const stream = await this.alfrescoService.download(id);
     return new StreamableFile(stream);
   }
 
@@ -49,15 +54,13 @@ export class ArquivosController {
   @ApiConsumes('multipart/form-data')
   @Permissions(permissoesArquivos.inclui)
   @ApiOperation({ summary: arquivos.upload })
-  @UseInterceptors(FileInterceptor('arquivo'))
-  async upload(
-    @Body() dto: Arquivo,
+  @UseInterceptors(FileInterceptor('conteudo'))
+  async inclui(
+    @Body() dto: ArquivoInclusaoModel,
     @UploadedFile(arquivoPdfValidator)
-    arquivo: Express.Multer.File,
-  ): Promise<Node> {
-    const { originalname, buffer } = arquivo;
-    const { entry } = await this.service.upload(originalname);
-    return this.service.atualizaConteudo(entry.id, buffer);
+    conteudo: Express.Multer.File,
+  ): Promise<string> {
+    return this.service.inclui({ ...dto, conteudo });
   }
 
   @Delete(':id')
@@ -65,6 +68,6 @@ export class ArquivosController {
   @Permissions(permissoesArquivos.exclui)
   @ApiOperation({ summary: arquivos.exclui })
   exclui(@Param('id') id: string): void {
-    this.service.exclui(id);
+    this.alfrescoService.exclui(id);
   }
 }

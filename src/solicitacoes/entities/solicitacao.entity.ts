@@ -1,8 +1,8 @@
-import { AuditableEntity } from 'src/common/entities';
+import { BaseEntity } from 'src/common/entities';
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'SOLICITACAO' })
-export class SolicitacaoEntity {
+export class SolicitacaoEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   @PrimaryColumn({
     name: 'ID',
@@ -31,7 +31,4 @@ export class SolicitacaoEntity {
     comment: 'Data e hora de expiração da solicitação',
   })
   dataHoraTransmissao: Date;
-
-  @Column(() => AuditableEntity, { prefix: false })
-  auditable: AuditableEntity;
 }

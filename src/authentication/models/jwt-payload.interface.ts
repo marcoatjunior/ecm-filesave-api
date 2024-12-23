@@ -1,4 +1,4 @@
-import { JsonObject } from 'src/common/interfaces';
+import { JsonObject } from 'src/common/models';
 
 export interface JwtPayload extends JsonObject {
   /** Issuer (who created and signed this token) */
