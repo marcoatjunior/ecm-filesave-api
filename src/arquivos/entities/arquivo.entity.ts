@@ -1,22 +1,32 @@
-import { BaseEntity } from 'src/common/entities';
+import { AuditableEntity } from 'src/common/entities';
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { SituacaoEcmEnum } from '../enums';
 
 @Entity({ name: 'ARQUIVO' })
 export class ArquivoEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   @PrimaryColumn({
     name: 'ID',
     comment: 'ID do arquivo (PK)',
-    precision: 10,
   })
-  id: number;
+  id: string;
 
   @Column({
     name: 'ID_ECM',
     length: 80,
-    comment: 'ID do arquivo no ECM',
+    comment: 'Identificador do arquivo no ECM',
+    nullable: true,
   })
   idEcm: string;
+
+  @Column({
+    name: 'SITUACAO',
+    type: 'enum',
+    enum: SituacaoEcmEnum,
+    default: SituacaoEcmEnum.PENDENTE,
+    comment: 'Situação de envio do arquivo no ECM',
+  })
+  situacao: SituacaoEcmEnum;
 
   @Column({
     name: 'NOME',
@@ -41,6 +51,6 @@ export class ArquivoEntity {
   })
   dataHoraTransmissao: Date;
 
-  @Column(() => BaseEntity, { prefix: false })
-  persistable: BaseEntity;
+  @Column(() => AuditableEntity, { prefix: false })
+  auditable: AuditableEntity;
 }

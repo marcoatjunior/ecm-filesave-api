@@ -5,7 +5,7 @@ import {
   AlfrescoAuthService,
   AlfrescoNodeService,
 } from 'src/config/alfresco/services';
-import { ArquivosController } from './arquivos.controller';
+import { ArquivosController } from './controllers';
 
 @Module({
   imports: [HttpModule],
