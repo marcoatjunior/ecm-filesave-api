@@ -13,12 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  ApiConsumes,
-  ApiOperation,
-  ApiProduces,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import { Permissions } from 'src/authentication/decorators';
 import { arquivos } from 'src/common/resources';
@@ -26,7 +21,7 @@ import { permissoesArquivos } from 'src/common/resources/permissoes.resources';
 import { arquivoPdfValidator } from 'src/common/validators';
 import { Node } from 'src/config/alfresco/interfaces';
 import { AlfrescoNodeService } from 'src/config/alfresco/services';
-import { Arquivo } from './entities/arquivo.entity';
+import { Arquivo } from '../interfaces/arquivo.interface';
 
 @ApiTags('Arquivos')
 @Controller('arquivos')
