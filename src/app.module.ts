@@ -5,6 +5,7 @@ import { ArquivosModule } from './arquivos/arquivos.module';
 import { AuthenticationModule } from './authentication';
 import { configService } from './config';
 import { SolicitacoesModule } from './solicitacoes/solicitacoes.module';
+import { BatchModule } from './batch/batch.module';
 
 @Module({
   controllers: [AppController],
@@ -13,6 +14,7 @@ import { SolicitacoesModule } from './solicitacoes/solicitacoes.module';
     AuthenticationModule,
     ArquivosModule,
     SolicitacoesModule,
+    BatchModule,
   ],
 })
 export class AppModule {}
