@@ -13,8 +13,8 @@ export class ArquivosConteudoService {
     private serializer: ArquivoConteudoSerializer,
   ) {}
 
-  async inclui(dto: ArquivoInclusaoModel): Promise<ArquivoConteudoEntity> {
-    const entity = this.serializer.fromDto(dto);
+  async inclui(model: ArquivoInclusaoModel): Promise<ArquivoConteudoEntity> {
+    const entity = this.serializer.fromModel(model);
     return this.repository.save(entity);
   }
 }

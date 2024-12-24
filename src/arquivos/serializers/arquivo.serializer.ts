@@ -6,9 +6,10 @@ export class ArquivoSerializer extends BaseSerializer<
   ArquivoInclusaoModel,
   ArquivoEntity
 > {
-  fromDto(dto: ArquivoInclusaoModel): ArquivoEntity {
-    const entity = super.fromDto(dto);
+  fromModel(dto: ArquivoInclusaoModel): ArquivoEntity {
+    const entity = super.fromModel(dto);
     entity.nome = dto.nome;
+    entity.numeroBytes = dto.conteudo.size;
     return entity;
   }
 }

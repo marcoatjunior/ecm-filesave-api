@@ -4,9 +4,9 @@ export const api = {
 };
 
 export const arquivos = {
-  consulta: 'Consulta informações de um arquivo no repositório Alfresco ECM',
-  download: 'Download de arquivo no repositório Alfresco ECM',
-  upload: 'Upload de arquivo no repositório Alfresco ECM',
+  consulta: 'Consulta arquivo no repositório Alfresco ECM',
+  download: 'Efetua download de arquivo no repositório Alfresco ECM',
+  inclui: 'Inclui arquivo no repositório Alfresco ECM',
   exclui: 'Exclui arquivo no repositório Alfresco ECM',
 };
 

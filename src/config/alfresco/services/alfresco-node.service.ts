@@ -1,7 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
-import { AxiosResponse } from 'axios';
-import { map, Observable } from 'rxjs';
+import { Injectable, StreamableFile } from '@nestjs/common';
 import { Readable } from 'stream';
 import { Node } from '../interfaces';
 
@@ -9,23 +7,25 @@ import { Node } from '../interfaces';
 export class AlfrescoNodeService {
   constructor(private http: HttpService) {}
 
-  consulta(id: string): Observable<Node> {
-    return this.http
-      .get<Node>(this.montaUrl(id))
-      .pipe(map((response: AxiosResponse<Node>) => response.data));
-  }
-
-  download(id: string): Promise<Readable> {
-    return new Promise<Readable>((resolve) =>
+  async consulta(id: string): Promise<Node> {
+    return new Promise<Node>((resolve) =>
       this.http
-        .get<Readable>(`${this.montaUrl(id)}/content`, {
-          responseType: 'stream',
-        })
+        .get<Node>(this.montaUrl(id))
         .subscribe({ next: ({ data }) => resolve(data) }),
     );
   }
 
-  upload(nome: string, diretorio: string): Promise<Node> {
+  async download(id: string): Promise<StreamableFile> {
+    return new Promise<StreamableFile>((resolve) =>
+      this.http
+        .get<Readable>(`${this.montaUrl(id)}/content`, {
+          responseType: 'stream',
+        })
+        .subscribe({ next: ({ data }) => resolve(new StreamableFile(data)) }),
+    );
+  }
+
+  async upload(nome: string, diretorio: string): Promise<Node> {
     return new Promise<Node>((resolve) =>
       this.http
         .post<Node>(
@@ -36,7 +36,7 @@ export class AlfrescoNodeService {
     );
   }
 
-  atualizaConteudo(id: string, buffer: Buffer<ArrayBufferLike>): Promise<Node> {
+  async atualiza(id: string, buffer: Buffer<ArrayBufferLike>): Promise<Node> {
     return new Promise<Node>((resolve) =>
       this.http
         .put<Node>(`${this.montaUrl(id)}/content`, buffer, {
@@ -46,12 +46,8 @@ export class AlfrescoNodeService {
     );
   }
 
-  exclui(id: string): Promise<{}> {
-    return new Promise<{}>(() =>
-      this.http
-        .delete<{}>(`${this.montaUrl(id)}`)
-        .subscribe({ next: () => {} }),
-    );
+  async exclui(id: string): Promise<void> {
+    this.http.delete<void>(`${this.montaUrl(id)}`);
   }
 
   private montaUrl(id?: string): string {
