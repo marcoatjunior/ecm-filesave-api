@@ -6,23 +6,23 @@ import { BaseEntity } from '../entities';
 import { BaseModel } from '../models';
 
 @Injectable({ scope: Scope.REQUEST })
-export class BaseSerializer<S extends BaseModel, T extends BaseEntity> {
+export class BaseSerializer<M extends BaseModel, E extends BaseEntity> {
   constructor(@Inject(REQUEST) private readonly request: any) {}
 
-  fromDto(source: S): T {
-    const target = {} as T;
-    this.incluiControles(target);
-    return target;
+  fromModel(model: M): E {
+    const entity = {} as E;
+    this.incluiControles(entity);
+    return entity;
   }
 
   @BeforeInsert()
   @BeforeUpdate()
-  async incluiControles(target: T): Promise<T> {
+  async incluiControles(entity: E): Promise<E> {
     const user = this.request.user as UserModel;
-    if (!target.usuarioCriacao) {
-      target.usuarioCriacao = user.sub;
+    if (!entity.usuarioCriacao) {
+      entity.usuarioCriacao = user.sub;
     }
-    target.usuarioAtualizacao = user.sub;
-    return target;
+    entity.usuarioAtualizacao = user.sub;
+    return entity;
   }
 }

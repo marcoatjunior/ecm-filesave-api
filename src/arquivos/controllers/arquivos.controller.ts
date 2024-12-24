@@ -14,30 +14,25 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Observable } from 'rxjs';
 import { Permissions } from 'src/authentication/decorators';
 import { arquivos } from 'src/common/resources';
 import { permissoesArquivos } from 'src/common/resources/permissoes.resources';
 import { arquivoPdfValidator } from 'src/common/validators';
-import { Node } from 'src/config/alfresco/interfaces';
 import { AlfrescoNodeService } from 'src/config/alfresco/services';
+import { ArquivoEntity } from '../entities';
 import { ArquivoInclusaoModel } from '../models';
-import { ArquivosConteudoService, ArquivosService } from '../services';
+import { ArquivosService } from '../services';
 
 @ApiTags('Arquivos')
 @Controller('arquivos')
 export class ArquivosController {
-  constructor(
-    private service: ArquivosService,
-    private conteudoService: ArquivosConteudoService,
-    private alfrescoService: AlfrescoNodeService,
-  ) {}
+  constructor(private service: ArquivosService) {}
 
   @Get(':id')
   @Permissions(permissoesArquivos.consulta)
   @ApiOperation({ summary: arquivos.consulta })
-  consulta(@Param('id') id: string): Observable<Node> {
-    return this.alfrescoService.consulta(id);
+  consulta(@Param('id') id: string): Promise<ArquivoEntity> {
+    return this.service.consulta(id);
   }
 
   @Get(':id/download')
@@ -45,15 +40,14 @@ export class ArquivosController {
   @Permissions(permissoesArquivos.consulta)
   @ApiOperation({ summary: arquivos.download })
   async download(@Param('id') id: string): Promise<StreamableFile> {
-    const stream = await this.alfrescoService.download(id);
-    return new StreamableFile(stream);
+    return await this.service.download(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiConsumes('multipart/form-data')
   @Permissions(permissoesArquivos.inclui)
-  @ApiOperation({ summary: arquivos.upload })
+  @ApiOperation({ summary: arquivos.inclui })
   @UseInterceptors(FileInterceptor('conteudo'))
   async inclui(
     @Body() dto: ArquivoInclusaoModel,
@@ -68,6 +62,6 @@ export class ArquivosController {
   @Permissions(permissoesArquivos.exclui)
   @ApiOperation({ summary: arquivos.exclui })
   exclui(@Param('id') id: string): void {
-    this.alfrescoService.exclui(id);
+    this.service.exclui(id);
   }
 }

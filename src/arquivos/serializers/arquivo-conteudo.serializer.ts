@@ -7,9 +7,9 @@ export class ArquivoConteudoSerializer extends BaseSerializer<
   ArquivoInclusaoModel,
   ArquivoConteudoEntity
 > {
-  fromDto(dto: ArquivoInclusaoModel): ArquivoConteudoEntity {
-    const entity = super.fromDto(dto);
-    entity.idArquivo = dto.idArquivo;
+  fromModel(dto: ArquivoInclusaoModel): ArquivoConteudoEntity {
+    const entity = super.fromModel(dto);
+    entity.idArquivo = dto.id;
     entity.conteudo = dto.conteudo.buffer;
     entity.organizacao = dto.organizacao;
     entity.sistema = dto.sistema;
