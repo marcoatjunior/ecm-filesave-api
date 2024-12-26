@@ -34,8 +34,7 @@ export class ArquivosService {
     this.consulta(id)
       .then((arquivo) =>
         this.salva({ ...arquivo, situacao: SituacaoEcmEnum.DELETADO }),
-      )
-      .then(({ idEcm }) => this.alfrescoService.exclui(idEcm));
+      );
   }
 
   async exclui(id: string): Promise<void> {
