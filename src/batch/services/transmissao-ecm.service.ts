@@ -38,7 +38,7 @@ export class TransmissaoEcmService {
       .upload(`${nome}.${tipo}`, conteudo.sistema, conteudo.conteudo)
       .then(({ entry }) => this.atualizaSituacao(arquivo, entry));
 
-    Logger.debug(`Arquivo ${arquivo.id} incluído no repositório ECM.`);
+    Logger.debug(`Arquivo ${arquivo.id} transmitido no repositório ECM.`);
   }
 
   private atualizaSituacao(

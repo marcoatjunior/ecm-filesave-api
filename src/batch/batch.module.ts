@@ -2,14 +2,21 @@ import { HttpModule } from '@nestjs/axios';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArquivoConteudoEntity, ArquivoEntity } from 'src/arquivos/entities';
-import { ArquivosService } from 'src/arquivos/services';
+import {
+  ArquivosConteudoService,
+  ArquivosService,
+} from 'src/arquivos/services';
 import { AlfrescoMiddleware } from 'src/config/alfresco/middleware';
 import {
   AlfrescoAuthService,
   AlfrescoNodeService,
 } from 'src/config/alfresco/services';
 import { BatchArquivosController } from './controllers';
-import { HigienizacaoEcmService, TransmissaoEcmService } from './services';
+import {
+  ExclusaoEcmService,
+  HigienizacaoEcmService,
+  TransmissaoEcmService,
+} from './services';
 
 @Module({
   imports: [
@@ -20,7 +27,9 @@ import { HigienizacaoEcmService, TransmissaoEcmService } from './services';
   providers: [
     AlfrescoAuthService,
     AlfrescoNodeService,
+    ArquivosConteudoService,
     ArquivosService,
+    ExclusaoEcmService,
     HigienizacaoEcmService,
     TransmissaoEcmService,
   ],

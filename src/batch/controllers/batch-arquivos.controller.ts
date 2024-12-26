@@ -36,8 +36,8 @@ export class BatchArquivosController {
   @Public()
   @Post('exclusoes')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: batch.higienizacaoEcm })
+  @ApiOperation({ summary: batch.exclusaoEcm })
   exclui(): void {
-    this.higienizacaoService.executa();
+    this.exclusaoService.executa();
   }
 }
