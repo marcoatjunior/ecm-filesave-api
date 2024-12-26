@@ -8,7 +8,7 @@ import {
   TransmissaoEcmService,
 } from '../services';
 
-@ApiTags('Batch')
+@ApiTags('Rotinas Batch')
 @Controller('batch/arquivos')
 export class BatchArquivosController {
   constructor(
@@ -26,7 +26,7 @@ export class BatchArquivosController {
   }
 
   @Public()
-  @Put('higienizacoes')
+  @Delete('higienizacoes')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: batch.higienizacaoEcm })
   higieniza(): void {
