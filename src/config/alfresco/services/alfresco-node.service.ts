@@ -25,7 +25,11 @@ export class AlfrescoNodeService {
     );
   }
 
-  async upload(nome: string, diretorio: string): Promise<Node> {
+  async upload(
+    nome: string,
+    diretorio: string,
+    conteudo: Buffer<ArrayBufferLike>,
+  ): Promise<Node> {
     return new Promise<Node>((resolve) =>
       this.http
         .post<Node>(
@@ -33,7 +37,7 @@ export class AlfrescoNodeService {
           { name: nome, nodeType: 'cm:content', relativePath: diretorio },
         )
         .subscribe({ next: ({ data }) => resolve(data) }),
-    );
+    ).then(({ entry }) => this.atualiza(entry.id, conteudo));
   }
 
   async atualiza(id: string, buffer: Buffer<ArrayBufferLike>): Promise<Node> {

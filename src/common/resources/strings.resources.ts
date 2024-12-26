@@ -12,6 +12,10 @@ export const arquivos = {
 
 export const batch = {
   transmissaoEcm: 'Transmite arquivos pendentes de envio ao repositório ECM',
+  higienizacaoEcm: 'Higieniza conteúdo de arquivos enviados ao repositório ECM',
+  exclusaoEcm: 'Exclui arquivos em situação de remoção no repositório ECM',
+  execucaoRotinaIniciada: 'Execução de rotina finalizada às {data}',
+  execucaoRotinaFinalizada: 'Execução de rotina iniciada às {data}',
 };
 
 export const excecoes = {
@@ -25,4 +29,5 @@ export const excecoes = {
 
 export const validacoes = {
   arquivoNaoSuportado: 'O arquivo selecionado deve estar no formato PDF.',
+  dataNaoInformada: 'A data deve ser informada.',
 };

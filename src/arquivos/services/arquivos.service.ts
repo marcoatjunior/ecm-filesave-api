@@ -13,10 +13,10 @@ export class ArquivosService {
     private alfrescoService: AlfrescoNodeService,
   ) {}
 
-  async listaPendentesTransmissao(): Promise<ArquivoEntity[]> {
+  async listaPorSituacao(situacao: SituacaoEcmEnum): Promise<ArquivoEntity[]> {
     return this.repository.find({
       relations: ['conteudo'],
-      where: { situacao: SituacaoEcmEnum.PENDENTE },
+      where: { situacao },
     });
   }
 
@@ -30,12 +30,16 @@ export class ArquivosService {
     );
   }
 
-  async exclui(id: string): Promise<void> {
+  async remove(id: string): Promise<void> {
     this.consulta(id)
       .then((arquivo) =>
         this.salva({ ...arquivo, situacao: SituacaoEcmEnum.DELETADO }),
       )
       .then(({ idEcm }) => this.alfrescoService.exclui(idEcm));
+  }
+
+  async exclui(id: string): Promise<void> {
+    this.repository.delete({ id });
   }
 
   async salva(arquivo: ArquivoEntity): Promise<ArquivoEntity> {

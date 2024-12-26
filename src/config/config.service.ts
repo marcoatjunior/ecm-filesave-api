@@ -2,7 +2,6 @@ import { InternalServerErrorException } from '@nestjs/common';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import { ArquivoConteudoEntity, ArquivoEntity } from 'src/arquivos/entities';
-import { BatchArquivoTransmissaoEntity } from 'src/batch/entities/batch-arquivo-transmissao.entity';
 import { excecoes } from 'src/common/resources';
 import {
   SolicitacaoArquivoEntity,
@@ -46,7 +45,6 @@ class ConfigService {
       entities: [
         ArquivoEntity,
         ArquivoConteudoEntity,
-        BatchArquivoTransmissaoEntity,
         SolicitacaoEntity,
         SolicitacaoArquivoEntity,
       ],
@@ -67,3 +65,4 @@ const configService = new ConfigService(process.env).ensureValues([
 ]);
 
 export { configService };
+

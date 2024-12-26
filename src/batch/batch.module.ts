@@ -9,7 +9,7 @@ import {
   AlfrescoNodeService,
 } from 'src/config/alfresco/services';
 import { BatchArquivosController } from './controllers';
-import { TransmissaoEcmService } from './services';
+import { HigienizacaoEcmService, TransmissaoEcmService } from './services';
 
 @Module({
   imports: [
@@ -21,6 +21,7 @@ import { TransmissaoEcmService } from './services';
     AlfrescoAuthService,
     AlfrescoNodeService,
     ArquivosService,
+    HigienizacaoEcmService,
     TransmissaoEcmService,
   ],
 })

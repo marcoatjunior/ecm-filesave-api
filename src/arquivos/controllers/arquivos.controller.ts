@@ -69,6 +69,6 @@ export class ArquivosController {
   @Permissions(permissoesArquivos.exclui)
   @ApiOperation({ summary: arquivos.exclui })
   exclui(@Param('id') id: string): void {
-    this.service.exclui(id);
+    this.service.remove(id);
   }
 }
