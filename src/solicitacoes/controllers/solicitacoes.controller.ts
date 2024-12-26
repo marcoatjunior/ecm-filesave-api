@@ -1,4 +1,11 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Permissions } from 'src/authentication/decorators';
 import { solicitacoes } from 'src/common/resources';
@@ -19,6 +26,13 @@ export class SolicitacoesController {
     private serializer: SolicitacaoSerializer,
     private arquivoSerializer: SolicitacaoArquivoSerializer,
   ) {}
+
+  @Get('ativas/:sistema')
+  @Permissions(permissoesSolicitacoes.lista)
+  @ApiOperation({ summary: solicitacoes.listaAtivasPorSistema })
+  listaAtivas(sistema: string): Promise<SolicitacaoEntity[]> {
+    return this.service.listaAtivas(sistema);
+  }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)

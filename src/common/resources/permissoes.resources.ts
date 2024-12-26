@@ -6,5 +6,6 @@ export const permissoesArquivos = {
 };
 
 export const permissoesSolicitacoes = {
+  lista: 'lista:solicitacoes',
   inclui: 'inclui:solicitacoes',
 };
