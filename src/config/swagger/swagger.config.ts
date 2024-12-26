@@ -40,6 +40,7 @@ const uiOptions: SwaggerUiOptions = {
     scopes: ['openid', 'profile', 'email'],
   },
   oauth2RedirectUrl: redirectUrl,
+  defaultModelsExpandDepth: -1,
 };
 
 const documentOptions: SwaggerDocumentOptions = {
