@@ -1,4 +1,4 @@
-import { Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Controller, Delete, HttpCode, HttpStatus, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/authentication/decorators';
 import { batch } from 'src/common/resources';
@@ -18,7 +18,7 @@ export class BatchArquivosController {
   ) {}
 
   @Public()
-  @Post('transmissoes')
+  @Put('transmissoes')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: batch.transmissaoEcm })
   transmite(): void {
@@ -26,7 +26,7 @@ export class BatchArquivosController {
   }
 
   @Public()
-  @Post('higienizacoes')
+  @Put('higienizacoes')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: batch.higienizacaoEcm })
   higieniza(): void {
@@ -34,7 +34,7 @@ export class BatchArquivosController {
   }
 
   @Public()
-  @Post('exclusoes')
+  @Delete('exclusoes')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: batch.exclusaoEcm })
   exclui(): void {
