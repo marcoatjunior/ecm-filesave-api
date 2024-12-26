@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class ArquivoInclusaoModel {
+export class ArquivoModel {
   id: string;
 
   @ApiProperty({ required: true, type: 'string', format: 'binary' })

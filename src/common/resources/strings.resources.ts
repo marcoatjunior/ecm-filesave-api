@@ -25,17 +25,3 @@ export const batch = {
   execucaoRotinaIniciada: 'Execução de rotina finalizada às {data}',
   execucaoRotinaFinalizada: 'Execução de rotina iniciada às {data}',
 };
-
-export const excecoes = {
-  tokenInvalido:
-    'JWT não possui o escopo obrigatório (`openid profile email`).',
-  naoAutenticado: 'O usuário deve estar autenticado para realizar esta ação.',
-  semAutorizacao: 'Usuário não possui autorização de acesso ao sistema.',
-  semPermissao: 'Usuário não possui autorização para a ação.',
-  erroInterno: 'Erro interno do servidor.',
-};
-
-export const validacoes = {
-  arquivoNaoSuportado: 'O arquivo selecionado deve estar no formato PDF.',
-  dataNaoInformada: 'A data deve ser informada.',
-};

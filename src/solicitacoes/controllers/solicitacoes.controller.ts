@@ -31,6 +31,7 @@ export class SolicitacoesController {
   ) {}
 
   @Get(':id')
+  @HttpCode(HttpStatus.OK)
   @Permissions(permissoesSolicitacoes.consulta)
   @ApiOperation({ summary: solicitacoes.consulta })
   consulta(@Param('id') id: string): Promise<SolicitacaoEntity> {
@@ -38,6 +39,7 @@ export class SolicitacoesController {
   }
 
   @Post(':id/qrcode')
+  @HttpCode(HttpStatus.OK)
   @Permissions(permissoesSolicitacoes.qrcode)
   @ApiOperation({ summary: solicitacoes.qrcode })
   @Header('Content-Disposition', 'attachment; filename=qrcode.png')
@@ -46,6 +48,7 @@ export class SolicitacoesController {
   }
 
   @Get('ativas/:sistema')
+  @HttpCode(HttpStatus.OK)
   @Permissions(permissoesSolicitacoes.lista)
   @ApiOperation({ summary: solicitacoes.listaAtivasPorSistema })
   listaAtivas(@Param('sistema') sistema: string): Promise<SolicitacaoEntity[]> {

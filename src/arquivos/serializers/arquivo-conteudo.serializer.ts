@@ -1,15 +1,15 @@
 import { InformacoesEntity } from 'src/common/entities';
 import { BaseSerializer } from 'src/common/serializers/base.serializer';
 import { ArquivoConteudoEntity } from '../entities';
-import { ArquivoInclusaoModel } from '../models';
+import { ArquivoModel } from '../models';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ArquivoConteudoSerializer extends BaseSerializer<
-  ArquivoInclusaoModel,
+  ArquivoModel,
   ArquivoConteudoEntity
 > {
-  fromModel(model: ArquivoInclusaoModel): ArquivoConteudoEntity {
+  fromModel(model: ArquivoModel): ArquivoConteudoEntity {
     const entity = super.fromModel(model);
     entity.conteudo = model.conteudo.buffer;
     entity.organizacao = model.organizacao;
@@ -20,7 +20,7 @@ export class ArquivoConteudoSerializer extends BaseSerializer<
 
   private populaInformacoes(
     entity: ArquivoConteudoEntity,
-    model: ArquivoInclusaoModel,
+    model: ArquivoModel,
   ) {
     entity.informacoes = {
       nome: model.nome,
