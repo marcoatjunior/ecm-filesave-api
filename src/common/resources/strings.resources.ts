@@ -12,6 +12,7 @@ export const arquivos = {
 
 export const solicitacoes = {
   consulta: 'Consulta solicitações de inclusão de arquivos',
+  qrcode: 'Gera QR Code para inclusão de arquivos de uma solicitação',
   listaAtivasPorSistema:
     'Lista solicitações de inclusão de arquivos ativas por sistema',
   inclui: 'Gera solicitação de inclusão de arquivos',

@@ -2,15 +2,17 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   HttpCode,
   HttpStatus,
   Param,
   Post,
+  StreamableFile,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Permissions } from 'src/authentication/decorators';
 import { solicitacoes } from 'src/common/resources';
-import { permissoesSolicitacoes } from 'src/common/resources/permissoes.resources';
+import { permissoesSolicitacoes } from 'src/common/resources';
 import { SolicitacaoEntity } from '../entities';
 import { SolicitacaoModel } from '../models';
 import {
@@ -33,6 +35,14 @@ export class SolicitacoesController {
   @ApiOperation({ summary: solicitacoes.consulta })
   consulta(@Param('id') id: string): Promise<SolicitacaoEntity> {
     return this.service.consulta(id);
+  }
+
+  @Post(':id/qrcode')
+  @Permissions(permissoesSolicitacoes.qrcode)
+  @ApiOperation({ summary: solicitacoes.qrcode })
+  @Header('Content-Disposition', 'attachment; filename=qrcode.png')
+  async geraQrCode(@Param('id') id: string): Promise<StreamableFile> {
+    return await this.service.geraQrCode(id);
   }
 
   @Get('ativas/:sistema')
