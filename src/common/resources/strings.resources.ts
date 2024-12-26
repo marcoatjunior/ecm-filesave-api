@@ -11,7 +11,9 @@ export const arquivos = {
 };
 
 export const solicitacoes = {
-  listaAtivasPorSistema: 'Lista solicitações de inclusão de arquivos ativas por sistema',
+  consulta: 'Consulta solicitações de inclusão de arquivos',
+  listaAtivasPorSistema:
+    'Lista solicitações de inclusão de arquivos ativas por sistema',
   inclui: 'Gera solicitação de inclusão de arquivos',
 };
 

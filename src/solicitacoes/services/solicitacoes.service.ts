@@ -20,6 +20,10 @@ export class SolicitacoesService {
     });
   }
 
+  async consulta(id: string): Promise<SolicitacaoEntity> {
+    return this.repository.findOne({ relations: ['arquivo'], where: { id } });
+  }
+
   async salva(arquivo: SolicitacaoEntity): Promise<SolicitacaoEntity> {
     return this.repository.save(arquivo);
   }

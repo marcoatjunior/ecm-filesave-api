@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -27,10 +28,17 @@ export class SolicitacoesController {
     private arquivoSerializer: SolicitacaoArquivoSerializer,
   ) {}
 
+  @Get(':id')
+  @Permissions(permissoesSolicitacoes.consulta)
+  @ApiOperation({ summary: solicitacoes.consulta })
+  consulta(@Param('id') id: string): Promise<SolicitacaoEntity> {
+    return this.service.consulta(id);
+  }
+
   @Get('ativas/:sistema')
   @Permissions(permissoesSolicitacoes.lista)
   @ApiOperation({ summary: solicitacoes.listaAtivasPorSistema })
-  listaAtivas(sistema: string): Promise<SolicitacaoEntity[]> {
+  listaAtivas(@Param('sistema') sistema: string): Promise<SolicitacaoEntity[]> {
     return this.service.listaAtivas(sistema);
   }
 
