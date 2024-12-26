@@ -10,6 +10,10 @@ export const arquivos = {
   exclui: 'Exclui arquivo no repositório Alfresco ECM',
 };
 
+export const solicitacoes = {
+  inclui: 'Gera solicitação de inclusão de arquivos',
+};
+
 export const batch = {
   transmissaoEcm: 'Transmite arquivos pendentes de envio ao repositório ECM',
   higienizacaoEcm: 'Higieniza conteúdo de arquivos enviados ao repositório ECM',

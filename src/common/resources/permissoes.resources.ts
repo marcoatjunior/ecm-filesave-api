@@ -4,3 +4,7 @@ export const permissoesArquivos = {
   inclui: 'inclui:arquivos',
   exclui: 'exclui:arquivos',
 };
+
+export const permissoesSolicitacoes = {
+  inclui: 'inclui:solicitacoes',
+};
