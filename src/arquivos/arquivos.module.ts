@@ -21,7 +21,6 @@ import { ArquivosConteudoService, ArquivosService } from './services';
     AlfrescoAuthService,
     AlfrescoNodeService,
     ArquivosService,
-    ArquivosConteudoService,
     ArquivoSerializer,
     ArquivoConteudoSerializer,
   ],

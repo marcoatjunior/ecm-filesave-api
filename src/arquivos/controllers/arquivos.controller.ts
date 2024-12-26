@@ -18,15 +18,19 @@ import { Permissions } from 'src/authentication/decorators';
 import { arquivos } from 'src/common/resources';
 import { permissoesArquivos } from 'src/common/resources/permissoes.resources';
 import { arquivoPdfValidator } from 'src/common/validators';
-import { AlfrescoNodeService } from 'src/config/alfresco/services';
 import { ArquivoEntity } from '../entities';
 import { ArquivoInclusaoModel } from '../models';
+import { ArquivoConteudoSerializer, ArquivoSerializer } from '../serializers';
 import { ArquivosService } from '../services';
 
 @ApiTags('Arquivos')
 @Controller('arquivos')
 export class ArquivosController {
-  constructor(private service: ArquivosService) {}
+  constructor(
+    private service: ArquivosService,
+    private serializer: ArquivoSerializer,
+    private conteudoSerializer: ArquivoConteudoSerializer,
+  ) {}
 
   @Get(':id')
   @Permissions(permissoesArquivos.consulta)
@@ -50,11 +54,14 @@ export class ArquivosController {
   @ApiOperation({ summary: arquivos.inclui })
   @UseInterceptors(FileInterceptor('conteudo'))
   async inclui(
-    @Body() dto: ArquivoInclusaoModel,
+    @Body() model: ArquivoInclusaoModel,
     @UploadedFile(arquivoPdfValidator)
     conteudo: Express.Multer.File,
-  ): Promise<string> {
-    return this.service.inclui({ ...dto, conteudo });
+  ): Promise<Pick<ArquivoEntity, 'id'>> {
+    model.conteudo = conteudo;
+    const arquivo = this.serializer.fromModel(model);
+    arquivo.conteudo = this.conteudoSerializer.fromModel(model);
+    return this.service.salva(arquivo);
   }
 
   @Delete(':id')

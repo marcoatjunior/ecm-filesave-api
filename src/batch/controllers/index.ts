@@ -1,1 +1,1 @@
-export * from './batch.controller';
+export * from './batch-arquivos.controller';

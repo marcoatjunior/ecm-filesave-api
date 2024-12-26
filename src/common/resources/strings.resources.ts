@@ -10,6 +10,10 @@ export const arquivos = {
   exclui: 'Exclui arquivo no repositório Alfresco ECM',
 };
 
+export const batch = {
+  transmissaoEcm: 'Transmite arquivos pendentes de envio ao repositório ECM',
+};
+
 export const excecoes = {
   tokenInvalido:
     'JWT não possui o escopo obrigatório (`openid profile email`).',
