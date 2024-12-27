@@ -19,7 +19,7 @@ O projeto ainda está em desenvolvimento e alguns dos grandes tópicos a serem d
 
 ## ☕ Pré-Requisitos e Instruções de Uso
 
-- Possuir um usuário válido no Alfresco ECM com Client ID e Client Secret para integrações [a versão Community do serviço pode ser encontrada em ](https://docs.alfresco.com/content-services/community/install/containers/).
+- Possuir um usuário válido no Alfresco ECM com Client ID e Client Secret para integrações [a versão Community do serviço pode ser encontrada aqui ](https://docs.alfresco.com/content-services/community/install/containers/).
 - Acessar a URL `/api/docs` quando a aplicação estiver disponibilizada em algum servidor
 - Criar um usuário a partir da autenticaçã com Auth0
 - Entrar em contato solicitando permissão de acesso para simulação da integração
