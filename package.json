@@ -1,10 +1,10 @@
 {
   "name": "ecm-filesave-api",
-  "version": "0.11.0",
-  "description": "",
-  "author": "",
+  "version": "0.12.0",
+  "description": "API de comunicação com a plataforma Alfresco ECM.",
+  "author": "@marcoatjunior",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-only",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
