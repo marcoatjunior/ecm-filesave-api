@@ -1,12 +1,20 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NestMiddleware,
+} from '@nestjs/common';
 import axios from 'axios';
 import { NextFunction } from 'express';
 import { lastValueFrom } from 'rxjs';
 import { TicketResponse } from '../interfaces';
 import { AlfrescoAuthService } from '../services';
+import { excecoes } from 'src/common/resources';
 
 @Injectable()
 export class AlfrescoMiddleware implements NestMiddleware {
+  private readonly logger = new Logger(AlfrescoMiddleware.name);
+
   ticket: TicketResponse = null;
 
   constructor(private authService: AlfrescoAuthService) {}
@@ -16,14 +24,19 @@ export class AlfrescoMiddleware implements NestMiddleware {
     response: Response,
     next: (error?: Error | NextFunction) => void,
   ) {
-    this.populaTicket().then((ticket) => {
-      const { id } = ticket.entry;
-      axios.interceptors.request.use((config) => {
-        config.headers['Authorization'] = `Basic ${btoa(id)}`;
-        return config;
+    try {
+      this.populaTicket().then((ticket) => {
+        const { id } = ticket.entry;
+        axios.interceptors.request.use((config) => {
+          config.headers['Authorization'] = `Basic ${btoa(id)}`;
+          return config;
+        });
+        next();
       });
-      next();
-    });
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException(excecoes.erroInterno);
+    }
   }
 
   private async populaTicket(): Promise<TicketResponse> {

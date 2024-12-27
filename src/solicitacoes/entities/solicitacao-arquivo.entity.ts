@@ -1,5 +1,13 @@
 import { BaseEntity, InformacoesEntity } from 'src/common/entities';
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { SolicitacaoEntity } from './solicitacao.entity';
 
 @Entity({ name: 'SOLICITACAO_ARQUIVO' })
 export class SolicitacaoArquivoEntity extends BaseEntity {
@@ -10,13 +18,10 @@ export class SolicitacaoArquivoEntity extends BaseEntity {
   })
   id: string;
 
-  @Column({
-    name: 'ID_SOLICITACAO',
-    type: 'uuid',
-    comment: 'ID da solicitação na tabela SOLICITACAO',
-  })
-  idArquivo: string;
-
   @Column(() => InformacoesEntity, { prefix: false })
   informacoes: InformacoesEntity;
+
+  @JoinColumn({ name: 'ID' })
+  @ManyToOne(() => SolicitacaoEntity, (solicitacao) => solicitacao.arquivos)
+  arquivo?: SolicitacaoEntity;
 }

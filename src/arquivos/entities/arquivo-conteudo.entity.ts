@@ -1,5 +1,13 @@
 import { BaseEntity, InformacoesEntity } from 'src/common/entities';
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ArquivoEntity } from './arquivo.entity';
 
 @Entity({ name: 'ARQUIVO_CONTEUDO' })
 export class ArquivoConteudoEntity extends BaseEntity {
@@ -9,13 +17,6 @@ export class ArquivoConteudoEntity extends BaseEntity {
     comment: 'ID do conteúdo do arquivo (PK)',
   })
   id: string;
-
-  @Column({
-    name: 'ID_ARQUIVO',
-    type: 'uuid',
-    comment: 'ID do arquivo na tabela ARQUIVO',
-  })
-  idArquivo: string;
 
   @Column({
     name: 'CONTEUDO',
@@ -40,4 +41,8 @@ export class ArquivoConteudoEntity extends BaseEntity {
 
   @Column(() => InformacoesEntity, { prefix: false })
   informacoes: InformacoesEntity;
+
+  @JoinColumn({ name: 'ID' })
+  @OneToOne(() => ArquivoEntity, (arquivo) => arquivo.conteudo)
+  arquivo: ArquivoEntity;
 }

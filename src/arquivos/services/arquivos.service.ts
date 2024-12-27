@@ -1,69 +1,56 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BusinessViolationException } from 'src/common/exceptions';
+import { validacoes } from 'src/common/resources';
 import { AlfrescoNodeService } from 'src/config/alfresco/services';
-import { Repository, UpdateResult } from 'typeorm';
-import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { ArquivoConteudoEntity, ArquivoEntity } from '../entities';
+import { Repository } from 'typeorm';
+import { ArquivoEntity } from '../entities';
 import { SituacaoEcmEnum } from '../enums';
-import { ArquivoInclusaoModel } from '../models';
-import { ArquivoSerializer } from '../serializers';
-import { ArquivosConteudoService } from './arquivos-conteudo.service';
 
 @Injectable()
 export class ArquivosService {
   constructor(
     @InjectRepository(ArquivoEntity)
     private repository: Repository<ArquivoEntity>,
-    private serializer: ArquivoSerializer,
-    private conteudoService: ArquivosConteudoService,
     private alfrescoService: AlfrescoNodeService,
   ) {}
 
-  async consulta(id: string): Promise<ArquivoEntity> {
-    return this.repository.findOne({ where: { id } });
+  async listaPorSituacao(situacao: SituacaoEcmEnum): Promise<ArquivoEntity[]> {
+    return this.repository.find({
+      relations: ['conteudo'],
+      where: { situacao },
+    });
+  }
+
+  async consultaEnviado(id: string): Promise<ArquivoEntity> {
+    const arquivo = await this.repository.findOne({
+      where: { id, situacao: SituacaoEcmEnum.ENVIADO },
+    });
+    if (!arquivo) {
+      throw new BusinessViolationException(validacoes.arquivoNaoExiste);
+    }
+    return arquivo;
   }
 
   async download(id: string): Promise<StreamableFile> {
-    return this.consulta(id).then(({ idEcm }) =>
-      this.alfrescoService.download(idEcm),
+    return this.consultaEnviado(id).then((arquivo) =>
+      this.alfrescoService.download(arquivo.idEcm),
     );
   }
 
+  async remove(id: string): Promise<void> {
+    return this.consultaEnviado(id)
+      .then((arquivo) =>
+        this.salva({ ...arquivo, situacao: SituacaoEcmEnum.DELETADO }),
+      )
+      .then(() => void {});
+  }
+
   async exclui(id: string): Promise<void> {
-    this.consulta(id)
-      .then(({ idEcm }) => this.alfrescoService.exclui(idEcm))
-      .then(() => this.altera(id, { situacao: SituacaoEcmEnum.DELETADO }));
+    this.repository.delete({ id });
   }
 
-  async altera(
-    id: string,
-    partial: QueryDeepPartialEntity<ArquivoEntity>,
-  ): Promise<UpdateResult> {
-    return this.repository.update(id, partial);
-  }
-
-  async inclui(model: ArquivoInclusaoModel): Promise<string> {
-    return this.repository
-      .save(this.serializer.fromModel(model))
-      .then(({ id }) => this.conteudoService.inclui({ ...model, id }))
-      .then((arquivo) => this.incluiAlfresco(arquivo));
-  }
-
-  private async incluiAlfresco(arquivo: ArquivoConteudoEntity) {
-    const { nome, tipo } = arquivo.informacoes;
-    return this.alfrescoService
-      .upload(`${nome}.${tipo}`, arquivo.sistema)
-      .then(({ entry }) =>
-        this.alfrescoService.atualiza(entry.id, arquivo.conteudo),
-      )
-      .then(({ entry }) =>
-        this.altera(arquivo.id, {
-          ...arquivo,
-          idEcm: entry.id,
-          situacao: SituacaoEcmEnum.ENVIADO,
-          dataHoraAtualizacao: new Date(),
-        }),
-      )
-      .then(() => arquivo.idArquivo);
+  async salva(arquivo: ArquivoEntity): Promise<ArquivoEntity> {
+    return this.repository.save(arquivo);
   }
 }

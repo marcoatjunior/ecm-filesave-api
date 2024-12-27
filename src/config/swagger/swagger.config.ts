@@ -40,6 +40,7 @@ const uiOptions: SwaggerUiOptions = {
     scopes: ['openid', 'profile', 'email'],
   },
   oauth2RedirectUrl: redirectUrl,
+  defaultModelsExpandDepth: -1,
 };
 
 const documentOptions: SwaggerDocumentOptions = {
@@ -55,7 +56,7 @@ const customOptions: SwaggerCustomOptions = {
 const builder: Omit<OpenAPIObject, 'paths'> = new DocumentBuilder()
   .setTitle(api.titulo)
   .setDescription(api.descricao)
-  .setVersion('0.6.0')
+  .setVersion(process.env.npm_package_version)
   .addServer(process.env.AUTH0_AUDIENCE)
   .addSecurityRequirements('Auth0')
   .addOAuth2(securityScheme, 'Auth0')

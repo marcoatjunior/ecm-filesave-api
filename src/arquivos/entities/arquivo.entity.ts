@@ -1,6 +1,13 @@
 import { BaseEntity } from 'src/common/entities';
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 import { SituacaoEcmEnum } from '../enums';
+import { ArquivoConteudoEntity } from './arquivo-conteudo.entity';
 
 @Entity({ name: 'ARQUIVO' })
 export class ArquivoEntity extends BaseEntity {
@@ -51,4 +58,9 @@ export class ArquivoEntity extends BaseEntity {
     comment: 'Data e hora da transmissão do arquivo ao ECM',
   })
   dataHoraTransmissao: Date;
+  
+  @OneToOne(() => ArquivoConteudoEntity, (conteudo) => conteudo.arquivo, {
+    cascade: true,
+  })
+  conteudo: ArquivoConteudoEntity;
 }

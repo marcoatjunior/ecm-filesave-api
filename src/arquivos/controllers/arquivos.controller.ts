@@ -15,30 +15,35 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Permissions } from 'src/authentication/decorators';
-import { arquivos } from 'src/common/resources';
-import { permissoesArquivos } from 'src/common/resources/permissoes.resources';
+import { arquivos, permissoesArquivos } from 'src/common/resources';
 import { arquivoPdfValidator } from 'src/common/validators';
-import { AlfrescoNodeService } from 'src/config/alfresco/services';
 import { ArquivoEntity } from '../entities';
-import { ArquivoInclusaoModel } from '../models';
+import { ArquivoModel } from '../models';
+import { ArquivoConteudoSerializer, ArquivoSerializer } from '../serializers';
 import { ArquivosService } from '../services';
 
 @ApiTags('Arquivos')
 @Controller('arquivos')
 export class ArquivosController {
-  constructor(private service: ArquivosService) {}
+  constructor(
+    private service: ArquivosService,
+    private serializer: ArquivoSerializer,
+    private conteudoSerializer: ArquivoConteudoSerializer,
+  ) {}
 
   @Get(':id')
+  @HttpCode(HttpStatus.OK)
   @Permissions(permissoesArquivos.consulta)
   @ApiOperation({ summary: arquivos.consulta })
   consulta(@Param('id') id: string): Promise<ArquivoEntity> {
-    return this.service.consulta(id);
+    return this.service.consultaEnviado(id);
   }
 
   @Get(':id/download')
-  @Header('Content-Disposition', 'attachment; filename=download.pdf')
+  @HttpCode(HttpStatus.OK)
   @Permissions(permissoesArquivos.consulta)
   @ApiOperation({ summary: arquivos.download })
+  @Header('Content-Disposition', 'attachment; filename=arquivo.pdf')
   async download(@Param('id') id: string): Promise<StreamableFile> {
     return await this.service.download(id);
   }
@@ -50,18 +55,22 @@ export class ArquivosController {
   @ApiOperation({ summary: arquivos.inclui })
   @UseInterceptors(FileInterceptor('conteudo'))
   async inclui(
-    @Body() dto: ArquivoInclusaoModel,
+    @Body() model: ArquivoModel,
     @UploadedFile(arquivoPdfValidator)
     conteudo: Express.Multer.File,
   ): Promise<string> {
-    return this.service.inclui({ ...dto, conteudo });
+    model.conteudo = conteudo;
+    let arquivo = this.serializer.fromModel(model);
+    arquivo.conteudo = this.conteudoSerializer.fromModel(model);
+    arquivo = await this.service.salva(arquivo);
+    return arquivo.id;
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @Permissions(permissoesArquivos.exclui)
   @ApiOperation({ summary: arquivos.exclui })
-  exclui(@Param('id') id: string): void {
-    this.service.exclui(id);
+  async exclui(@Param('id') id: string): Promise<void> {
+    return this.service.remove(id);
   }
 }

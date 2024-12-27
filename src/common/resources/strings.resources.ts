@@ -10,15 +10,18 @@ export const arquivos = {
   exclui: 'Exclui arquivo no repositório Alfresco ECM',
 };
 
-export const excecoes = {
-  tokenInvalido:
-    'JWT não possui o escopo obrigatório (`openid profile email`).',
-  naoAutenticado: 'O usuário deve estar autenticado para realizar esta ação.',
-  semAutorizacao: 'Usuário não possui autorização de acesso ao sistema.',
-  semPermissao: 'Usuário não possui autorização para a ação.',
-  erroInterno: 'Erro interno do servidor.',
+export const solicitacoes = {
+  consulta: 'Consulta solicitações de inclusão de arquivos',
+  qrcode: 'Gera QR Code para inclusão de arquivos de uma solicitação',
+  listaAtivasPorSistema:
+    'Lista solicitações de inclusão de arquivos ativas por sistema',
+  inclui: 'Gera solicitação de inclusão de arquivos',
 };
 
-export const validacoes = {
-  arquivoNaoSuportado: 'O arquivo selecionado deve estar no formato PDF.',
+export const batch = {
+  transmissaoEcm: 'Transmite arquivos pendentes de envio ao repositório ECM',
+  higienizacaoEcm: 'Higieniza conteúdo de arquivos enviados ao repositório ECM',
+  exclusaoEcm: 'Remove arquivos em situação de exclusão no repositório ECM',
+  execucaoRotinaIniciada: 'Execução de rotina finalizada às {data}',
+  execucaoRotinaFinalizada: 'Execução de rotina iniciada às {data}',
 };

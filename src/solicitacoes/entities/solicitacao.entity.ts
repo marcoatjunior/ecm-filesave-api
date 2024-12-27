@@ -1,5 +1,12 @@
 import { BaseEntity } from 'src/common/entities';
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { SolicitacaoArquivoEntity } from './solicitacao-arquivo.entity';
 
 @Entity({ name: 'SOLICITACAO' })
 export class SolicitacaoEntity extends BaseEntity {
@@ -30,5 +37,10 @@ export class SolicitacaoEntity extends BaseEntity {
     nullable: true,
     comment: 'Data e hora de expiração da solicitação',
   })
-  dataHoraTransmissao: Date;
+  dataHoraExpiracao: Date;
+
+  @OneToMany(() => SolicitacaoArquivoEntity, (conteudo) => conteudo.arquivo, {
+    cascade: true,
+  })
+  arquivos: SolicitacaoArquivoEntity[];
 }
