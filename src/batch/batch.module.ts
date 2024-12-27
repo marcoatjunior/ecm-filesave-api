@@ -11,9 +11,18 @@ import {
   AlfrescoAuthService,
   AlfrescoNodeService,
 } from 'src/config/alfresco/services';
-import { BatchArquivosController } from './controllers';
+import {
+  SolicitacaoArquivoEntity,
+  SolicitacaoEntity,
+} from 'src/solicitacoes/entities';
+import { SolicitacoesArquivoService, SolicitacoesService } from 'src/solicitacoes/services';
+import {
+  BatchArquivosController,
+  BatchSolicitacoesController,
+} from './controllers';
 import {
   ExclusaoEcmService,
+  ExpiracaoSolicitacaoService,
   HigienizacaoEcmService,
   TransmissaoEcmService,
 } from './services';
@@ -21,16 +30,24 @@ import {
 @Module({
   imports: [
     HttpModule,
-    TypeOrmModule.forFeature([ArquivoEntity, ArquivoConteudoEntity]),
+    TypeOrmModule.forFeature([
+      ArquivoEntity,
+      ArquivoConteudoEntity,
+      SolicitacaoEntity,
+      SolicitacaoArquivoEntity,
+    ]),
   ],
-  controllers: [BatchArquivosController],
+  controllers: [BatchArquivosController, BatchSolicitacoesController],
   providers: [
     AlfrescoAuthService,
     AlfrescoNodeService,
     ArquivosConteudoService,
     ArquivosService,
     ExclusaoEcmService,
+    ExpiracaoSolicitacaoService,
     HigienizacaoEcmService,
+    SolicitacoesArquivoService,
+    SolicitacoesService,
     TransmissaoEcmService,
   ],
 })

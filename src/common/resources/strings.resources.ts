@@ -22,6 +22,7 @@ export const batch = {
   transmissaoEcm: 'Transmite arquivos pendentes de envio ao repositório ECM',
   higienizacaoEcm: 'Higieniza conteúdo de arquivos enviados ao repositório ECM',
   exclusaoEcm: 'Remove arquivos em situação de exclusão no repositório ECM',
+  expiracaoSolicitacao: 'Remove solicitações de arquivos com data de expiração ultrapassada',
   execucaoRotinaIniciada: 'Execução de rotina finalizada às {data}',
   execucaoRotinaFinalizada: 'Execução de rotina iniciada às {data}',
 };

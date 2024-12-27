@@ -1,10 +1,10 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as qrcode from 'qrcode';
-import { MoreThanOrEqual, Repository } from 'typeorm';
-import { SolicitacaoEntity } from '../entities';
 import { BusinessViolationException } from 'src/common/exceptions';
 import { validacoes } from 'src/common/resources';
+import { LessThan, MoreThanOrEqual, Repository } from 'typeorm';
+import { SolicitacaoEntity } from '../entities';
 
 @Injectable()
 export class SolicitacoesService {
@@ -19,6 +19,15 @@ export class SolicitacoesService {
       where: {
         sistema,
         dataHoraExpiracao: MoreThanOrEqual(new Date()),
+      },
+    });
+  }
+
+  async listaExpiradas(): Promise<SolicitacaoEntity[]> {
+    return this.repository.find({
+      relations: ['arquivos'],
+      where: {
+        dataHoraExpiracao: LessThan(new Date()),
       },
     });
   }
@@ -42,6 +51,10 @@ export class SolicitacoesService {
       );
       return new StreamableFile(imagem);
     });
+  }
+
+  async exclui(id: string): Promise<void> {
+    this.repository.delete({ id });
   }
 
   async salva(arquivo: SolicitacaoEntity): Promise<SolicitacaoEntity> {
