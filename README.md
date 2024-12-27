@@ -1,12 +1,6 @@
-# Nome do projeto
+# ECM FileSave API
 
-![GitHub repo size](https://img.shields.io/github/repo-size/iuricode/README-template?style=for-the-badge)
-![GitHub language count](https://img.shields.io/github/languages/count/iuricode/README-template?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/iuricode/README-template?style=for-the-badge)
-![Bitbucket open issues](https://img.shields.io/bitbucket/issues/iuricode/README-template?style=for-the-badge)
-![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/iuricode/README-template?style=for-the-badge)
-
-<img src="/resources/images/logo.png" alt="ECM FileSave">
+<img src="/resources/images/logo.png" width="300" height="300" alt="ECM FileSave">
 
 > O foco do projeto é realizar a comunicação com a plataforma Alfresco ECM, descentralizando o armazenamento de documentos de uma base de dados padrão e utilizando um PaaS para gerenciamento de um ecossistema empresarial em nuvem.
 
