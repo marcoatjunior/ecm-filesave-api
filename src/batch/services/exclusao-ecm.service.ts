@@ -32,7 +32,6 @@ export class ExclusaoEcmService {
     this.alfrescoService
       .exclui(arquivo.idEcm)
       .then(() => this.arquivosService.exclui(arquivo.id));
-
     Logger.debug(`Arquivo ${arquivo.id} excluído no repositório ECM.`);
   }
 

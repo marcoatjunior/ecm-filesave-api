@@ -4,7 +4,6 @@ import { UserModel } from 'src/authentication/models';
 import { BeforeInsert, BeforeUpdate } from 'typeorm';
 import { BaseEntity } from '../entities';
 import { BaseModel } from '../models';
-import { BatchConstants } from 'src/batch/constants';
 
 @Injectable({ scope: Scope.REQUEST })
 export class BaseSerializer<M extends BaseModel, E extends BaseEntity> {
@@ -21,13 +20,9 @@ export class BaseSerializer<M extends BaseModel, E extends BaseEntity> {
   async incluiControles(entity: E): Promise<E> {
     const user = this.request.user as UserModel;
     if (!entity.usuarioCriacao) {
-      entity.usuarioCriacao = !!user?.sub
-        ? user.sub
-        : BatchConstants.USUARIO_BATCH;
+      entity.usuarioCriacao = user.sub;
     }
-    entity.usuarioAtualizacao = !!user?.sub
-      ? user.sub
-      : BatchConstants.USUARIO_BATCH;
+    entity.usuarioAtualizacao = user.sub;
     return entity;
   }
 }

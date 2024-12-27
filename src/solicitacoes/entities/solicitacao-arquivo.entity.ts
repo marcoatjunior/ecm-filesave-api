@@ -2,7 +2,8 @@ import { BaseEntity, InformacoesEntity } from 'src/common/entities';
 import {
   Column,
   Entity,
-  OneToOne,
+  JoinColumn,
+  ManyToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -20,6 +21,7 @@ export class SolicitacaoArquivoEntity extends BaseEntity {
   @Column(() => InformacoesEntity, { prefix: false })
   informacoes: InformacoesEntity;
 
-  @OneToOne(() => SolicitacaoEntity, (solicitacao) => solicitacao.arquivo)
-  arquivo: SolicitacaoEntity;
+  @JoinColumn({ name: 'ID' })
+  @ManyToOne(() => SolicitacaoEntity, (solicitacao) => solicitacao.arquivos)
+  arquivo?: SolicitacaoEntity;
 }

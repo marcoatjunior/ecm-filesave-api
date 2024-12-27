@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as qrcode from 'qrcode';
 import { MoreThanOrEqual, Repository } from 'typeorm';
 import { SolicitacaoEntity } from '../entities';
+import { BusinessViolationException } from 'src/common/exceptions';
+import { validacoes } from 'src/common/resources';
 
 @Injectable()
 export class SolicitacoesService {
@@ -13,7 +15,7 @@ export class SolicitacoesService {
 
   async listaAtivas(sistema: string): Promise<SolicitacaoEntity[]> {
     return this.repository.find({
-      relations: ['arquivo'],
+      relations: ['arquivos'],
       where: {
         sistema,
         dataHoraExpiracao: MoreThanOrEqual(new Date()),
@@ -22,7 +24,14 @@ export class SolicitacoesService {
   }
 
   async consulta(id: string): Promise<SolicitacaoEntity> {
-    return this.repository.findOne({ relations: ['arquivo'], where: { id } });
+    const solicitacao = await this.repository.findOne({
+      relations: ['arquivos'],
+      where: { id },
+    });
+    if (!solicitacao) {
+      throw new BusinessViolationException(validacoes.solicitacaoNaoEncontrada);
+    }
+    return solicitacao;
   }
 
   async geraQrCode(id: string): Promise<StreamableFile> {

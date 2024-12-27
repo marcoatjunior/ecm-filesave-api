@@ -1,28 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { InformacoesEntity } from 'src/common/entities';
 import { BaseSerializer } from 'src/common/serializers/base.serializer';
 import { SolicitacaoArquivoEntity } from '../entities';
-import { SolicitacaoModel } from '../models';
+import { SolicitacaoArquivoModel } from '../models';
 
 @Injectable()
 export class SolicitacaoArquivoSerializer extends BaseSerializer<
-  SolicitacaoModel,
+  SolicitacaoArquivoModel,
   SolicitacaoArquivoEntity
 > {
-  fromModel(model: SolicitacaoModel): SolicitacaoArquivoEntity {
+  fromModel(model: SolicitacaoArquivoModel): SolicitacaoArquivoEntity {
     const entity = super.fromModel(model);
-    this.populaInformacoes(entity, model);
+    entity.informacoes = { nome: model.nome, tipo: model.tipo };
     return entity;
-  }
-
-  private populaInformacoes(
-    entity: SolicitacaoArquivoEntity,
-    model: SolicitacaoModel,
-  ) {
-    entity.informacoes = {
-      nome: model.nome,
-      tipo: model.tipo,
-      extras: model.extras,
-    } as InformacoesEntity;
   }
 }

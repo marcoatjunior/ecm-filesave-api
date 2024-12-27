@@ -14,13 +14,4 @@ export abstract class InformacoesEntity {
     comment: 'Tipo do arquivo para o sistema cliente',
   })
   tipo: string;
-
-  @Column({
-    name: 'EXTRAS',
-    type: 'jsonb',
-    array: false,
-    default: () => "'[]'",
-    comment: 'Propriedades extras (JSON) do arquivo para o sistema cliente',
-  })
-  extras: Array<any>;
 }

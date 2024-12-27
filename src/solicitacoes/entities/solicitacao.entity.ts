@@ -2,8 +2,7 @@ import { BaseEntity } from 'src/common/entities';
 import {
   Column,
   Entity,
-  JoinColumn,
-  OneToOne,
+  OneToMany,
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -40,9 +39,8 @@ export class SolicitacaoEntity extends BaseEntity {
   })
   dataHoraExpiracao: Date;
 
-  @JoinColumn({ name: 'ID' })
-  @OneToOne(() => SolicitacaoArquivoEntity, (conteudo) => conteudo.arquivo, {
+  @OneToMany(() => SolicitacaoArquivoEntity, (conteudo) => conteudo.arquivo, {
     cascade: true,
   })
-  arquivo: SolicitacaoArquivoEntity;
+  arquivos: SolicitacaoArquivoEntity[];
 }

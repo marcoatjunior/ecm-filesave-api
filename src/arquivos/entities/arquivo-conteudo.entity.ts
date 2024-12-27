@@ -2,6 +2,7 @@ import { BaseEntity, InformacoesEntity } from 'src/common/entities';
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
@@ -41,6 +42,7 @@ export class ArquivoConteudoEntity extends BaseEntity {
   @Column(() => InformacoesEntity, { prefix: false })
   informacoes: InformacoesEntity;
 
+  @JoinColumn({ name: 'ID' })
   @OneToOne(() => ArquivoEntity, (arquivo) => arquivo.conteudo)
   arquivo: ArquivoEntity;
 }

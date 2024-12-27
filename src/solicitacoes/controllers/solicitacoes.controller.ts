@@ -34,7 +34,7 @@ export class SolicitacoesController {
   @HttpCode(HttpStatus.OK)
   @Permissions(permissoesSolicitacoes.consulta)
   @ApiOperation({ summary: solicitacoes.consulta })
-  consulta(@Param('id') id: string): Promise<SolicitacaoEntity> {
+  async consulta(@Param('id') id: string): Promise<SolicitacaoEntity> {
     return this.service.consulta(id);
   }
 
@@ -51,7 +51,9 @@ export class SolicitacoesController {
   @HttpCode(HttpStatus.OK)
   @Permissions(permissoesSolicitacoes.lista)
   @ApiOperation({ summary: solicitacoes.listaAtivasPorSistema })
-  listaAtivas(@Param('sistema') sistema: string): Promise<SolicitacaoEntity[]> {
+  async listaAtivas(
+    @Param('sistema') sistema: string,
+  ): Promise<SolicitacaoEntity[]> {
     return this.service.listaAtivas(sistema);
   }
 
@@ -59,11 +61,12 @@ export class SolicitacoesController {
   @HttpCode(HttpStatus.CREATED)
   @Permissions(permissoesSolicitacoes.inclui)
   @ApiOperation({ summary: solicitacoes.inclui })
-  async inclui(
-    @Body() model: SolicitacaoModel,
-  ): Promise<Pick<SolicitacaoEntity, 'id'>> {
-    const solicitacao = this.serializer.fromModel(model);
-    solicitacao.arquivo = this.arquivoSerializer.fromModel(model);
-    return this.service.salva(solicitacao);
+  async inclui(@Body() model: SolicitacaoModel): Promise<string> {
+    let solicitacao = this.serializer.fromModel(model);
+    solicitacao.arquivos = model.arquivos.map((a) =>
+      this.arquivoSerializer.fromModel(a),
+    );
+    solicitacao = await this.service.salva(solicitacao);
+    return solicitacao.id;
   }
 }

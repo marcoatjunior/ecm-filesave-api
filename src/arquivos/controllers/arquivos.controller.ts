@@ -15,8 +15,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Permissions } from 'src/authentication/decorators';
-import { arquivos } from 'src/common/resources';
-import { permissoesArquivos } from 'src/common/resources';
+import { arquivos, permissoesArquivos } from 'src/common/resources';
 import { arquivoPdfValidator } from 'src/common/validators';
 import { ArquivoEntity } from '../entities';
 import { ArquivoModel } from '../models';
@@ -37,14 +36,14 @@ export class ArquivosController {
   @Permissions(permissoesArquivos.consulta)
   @ApiOperation({ summary: arquivos.consulta })
   consulta(@Param('id') id: string): Promise<ArquivoEntity> {
-    return this.service.consulta(id);
+    return this.service.consultaEnviado(id);
   }
 
   @Get(':id/download')
   @HttpCode(HttpStatus.OK)
-  @Header('Content-Disposition', 'attachment; filename=download.pdf')
   @Permissions(permissoesArquivos.consulta)
   @ApiOperation({ summary: arquivos.download })
+  @Header('Content-Disposition', 'attachment; filename=arquivo.pdf')
   async download(@Param('id') id: string): Promise<StreamableFile> {
     return await this.service.download(id);
   }
@@ -59,18 +58,19 @@ export class ArquivosController {
     @Body() model: ArquivoModel,
     @UploadedFile(arquivoPdfValidator)
     conteudo: Express.Multer.File,
-  ): Promise<Pick<ArquivoEntity, 'id'>> {
+  ): Promise<string> {
     model.conteudo = conteudo;
-    const arquivo = this.serializer.fromModel(model);
+    let arquivo = this.serializer.fromModel(model);
     arquivo.conteudo = this.conteudoSerializer.fromModel(model);
-    return this.service.salva(arquivo);
+    arquivo = await this.service.salva(arquivo);
+    return arquivo.id;
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @Permissions(permissoesArquivos.exclui)
   @ApiOperation({ summary: arquivos.exclui })
-  exclui(@Param('id') id: string): void {
-    this.service.remove(id);
+  async exclui(@Param('id') id: string): Promise<void> {
+    return this.service.remove(id);
   }
 }

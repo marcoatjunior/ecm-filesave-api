@@ -5,7 +5,6 @@ import { ArquivosService } from 'src/arquivos/services';
 import { batch } from 'src/common/resources';
 import { NodeEntry } from 'src/config/alfresco/interfaces';
 import { AlfrescoNodeService } from 'src/config/alfresco/services';
-import { BatchConstants } from '../constants';
 
 @Injectable()
 export class TransmissaoEcmService {
@@ -50,7 +49,6 @@ export class TransmissaoEcmService {
       idEcm: entry.id,
       situacao: SituacaoEcmEnum.ENVIADO,
       dataHoraTransmissao: new Date(),
-      usuarioAtualizacao: BatchConstants.USUARIO_BATCH,
     });
   }
 

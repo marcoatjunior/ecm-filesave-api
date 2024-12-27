@@ -32,7 +32,6 @@ export class HigienizacaoEcmService {
 
   private async limpaConteudo(arquivo: ArquivoConteudoEntity): Promise<void> {
     this.conteudosService.exclui(arquivo.id);
-
     Logger.debug(`Arquivo ${arquivo.id} higienizado na tabela de conteúdo.`);
   }
 

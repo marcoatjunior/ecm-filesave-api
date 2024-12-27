@@ -31,7 +31,7 @@ export class AuthenticationGuard extends AuthGuard('jwt') {
 
   handleRequest(err, user) {
     if (err || !user) {
-      this.logger.error(err);
+      this.logger.error(err || excecoes.naoAutenticado);
       throw new UnauthorizedException(excecoes.naoAutenticado);
     }
     return user;

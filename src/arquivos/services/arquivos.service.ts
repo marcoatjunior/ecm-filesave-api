@@ -1,5 +1,7 @@
 import { Injectable, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BusinessViolationException } from 'src/common/exceptions';
+import { validacoes } from 'src/common/resources';
 import { AlfrescoNodeService } from 'src/config/alfresco/services';
 import { Repository } from 'typeorm';
 import { ArquivoEntity } from '../entities';
@@ -20,21 +22,28 @@ export class ArquivosService {
     });
   }
 
-  async consulta(id: string): Promise<ArquivoEntity> {
-    return this.repository.findOne({ where: { id } });
+  async consultaEnviado(id: string): Promise<ArquivoEntity> {
+    const arquivo = await this.repository.findOne({
+      where: { id, situacao: SituacaoEcmEnum.ENVIADO },
+    });
+    if (!arquivo) {
+      throw new BusinessViolationException(validacoes.arquivoNaoExiste);
+    }
+    return arquivo;
   }
 
   async download(id: string): Promise<StreamableFile> {
-    return this.consulta(id).then(({ idEcm }) =>
-      this.alfrescoService.download(idEcm),
+    return this.consultaEnviado(id).then((arquivo) =>
+      this.alfrescoService.download(arquivo.idEcm),
     );
   }
 
   async remove(id: string): Promise<void> {
-    this.consulta(id)
+    return this.consultaEnviado(id)
       .then((arquivo) =>
         this.salva({ ...arquivo, situacao: SituacaoEcmEnum.DELETADO }),
-      );
+      )
+      .then(() => void {});
   }
 
   async exclui(id: string): Promise<void> {
