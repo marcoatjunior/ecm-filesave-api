@@ -11,15 +11,15 @@ export class ArquivoModel {
   })
   conteudo: Express.Multer.File;
 
-  @ApiProperty({ required: true, example: 'PUCRS' })
+  @ApiProperty({ required: true, example: 'ESCOLA ABC' })
   organizacao: string;
 
-  @ApiProperty({ required: true, example: 'POS-GRAD' })
+  @ApiProperty({ required: true, example: 'ABC Aluno' })
   sistema: string;
 
   @ApiProperty({
     required: true,
-    example: 'MANUAL TCC PÓS DESENVOLVIMENTO FULL STACK',
+    example: 'GERENCIAMENTO DE DOCUMENTOS COM ALFRESCO ECM',
   })
   nome: string;
 

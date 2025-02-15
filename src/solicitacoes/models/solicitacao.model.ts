@@ -4,10 +4,10 @@ import { SolicitacaoArquivoModel } from './solicitacao-arquivo.model';
 export class SolicitacaoModel {
   id: string;
 
-  @ApiProperty({ required: true, example: 'PUCRS' })
+  @ApiProperty({ required: true, example: 'ESCOLA ABC' })
   organizacao: string;
 
-  @ApiProperty({ required: true, example: 'POS-GRAD' })
+  @ApiProperty({ required: true, example: 'ABC Aluno' })
   sistema: string;
 
   @ApiProperty({

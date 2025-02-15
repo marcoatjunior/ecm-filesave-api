@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -15,6 +16,7 @@ import { Public } from 'src/authentication/decorators';
 import { web } from 'src/common/resources';
 import { SolicitacoesService } from 'src/solicitacoes/services';
 import { WebArquivo, WebSolicitacao } from '../models';
+import { arquivoPdfValidator } from 'src/common/validators';
 
 @ApiTags('Web')
 @Controller('web')
@@ -50,7 +52,12 @@ export class WebController {
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: web.incluiArquivosSolicitacao })
   @UseInterceptors(FileInterceptor('conteudo'))
-  async inclui(@Body() model: WebArquivo): Promise<void> {
+  async inclui(
+    @Body() model: WebArquivo,
+    @UploadedFile(arquivoPdfValidator)
+    conteudo: Express.Multer.File,
+  ): Promise<void> {
+    model.conteudo = conteudo.buffer;
     const arquivo = this.montaRequisicaoArquivo(model);
     await this.arquivosService.salva(arquivo as any);
   }

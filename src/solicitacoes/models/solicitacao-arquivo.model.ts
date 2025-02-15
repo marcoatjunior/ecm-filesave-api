@@ -5,7 +5,7 @@ export class SolicitacaoArquivoModel {
 
   @ApiProperty({
     required: true,
-    example: 'MANUAL TCC PÓS DESENVOLVIMENTO FULL STACK',
+    example: 'GERENCIAMENTO DE DOCUMENTOS COM ALFRESCO ECM',
   })
   nome: string;
 
