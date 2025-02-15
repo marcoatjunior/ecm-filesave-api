@@ -9,7 +9,7 @@ spec:
   ports:
     - protocol: TCP
       port: 8000
-      targetPort: 3000
+      targetPort: 7000
 
 ---
 apiVersion: apps/v1
@@ -48,15 +48,15 @@ spec:
               memory: "128Mi"
               cpu: "500m"
           ports:
-            - containerPort: 3000
+            - containerPort: 7000
           readinessProbe:
             tcpSocket:
-              port: 3000
+              port: 7000
             initialDelaySeconds: 5
             periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /health
-              port: 3000
+              port: 7000
           imagePullPolicy: IfNotPresent
       serviceAccountName: default

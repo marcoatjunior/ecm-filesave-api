@@ -15,13 +15,15 @@ import {
   SolicitacaoArquivoEntity,
   SolicitacaoEntity,
 } from 'src/solicitacoes/entities';
-import { SolicitacoesArquivoService, SolicitacoesService } from 'src/solicitacoes/services';
+import {
+  SolicitacoesArquivoService,
+  SolicitacoesService,
+} from 'src/solicitacoes/services';
 import {
   BatchArquivosController,
   BatchSolicitacoesController,
 } from './controllers';
 import {
-  CargaSolicitacaoService,
   ExclusaoEcmService,
   ExpiracaoSolicitacaoService,
   HigienizacaoEcmService,
@@ -44,7 +46,6 @@ import {
     AlfrescoNodeService,
     ArquivosConteudoService,
     ArquivosService,
-    CargaSolicitacaoService,
     ExclusaoEcmService,
     ExpiracaoSolicitacaoService,
     HigienizacaoEcmService,
