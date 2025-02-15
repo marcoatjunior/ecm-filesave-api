@@ -1,6 +1,6 @@
 {
   "name": "ecm-filesave-api",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "API de comunicação com a plataforma Alfresco ECM.",
   "author": "@marcoatjunior",
   "private": true,
@@ -26,7 +26,6 @@
     "migration:revert": "npm run typeorm -- migration:revert"
   },
   "dependencies": {
-    "@faker-js/faker": "^9.3.0",
     "@nestjs/axios": "^3.1.3",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
@@ -47,7 +46,8 @@
     "qrcode": "^1.5.4",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "typeorm-extension": "^3.6.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.4.9",

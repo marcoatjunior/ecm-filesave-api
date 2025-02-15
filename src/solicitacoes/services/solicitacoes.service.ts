@@ -57,7 +57,7 @@ export class SolicitacoesService {
     this.repository.delete({ id });
   }
 
-  async salva(arquivo: SolicitacaoEntity): Promise<SolicitacaoEntity> {
-    return this.repository.save(arquivo);
+  async salva(solicitacao: SolicitacaoEntity): Promise<SolicitacaoEntity> {
+    return this.repository.save(solicitacao);
   }
 }

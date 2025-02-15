@@ -11,8 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Permissions } from 'src/authentication/decorators';
-import { solicitacoes } from 'src/common/resources';
-import { permissoesSolicitacoes } from 'src/common/resources';
+import { permissoesSolicitacoes, solicitacoes } from 'src/common/resources';
 import { SolicitacaoEntity } from '../entities';
 import { SolicitacaoModel } from '../models';
 import {

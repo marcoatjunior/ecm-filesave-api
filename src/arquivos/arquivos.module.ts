@@ -9,7 +9,7 @@ import {
 import { ArquivosController } from './controllers';
 import { ArquivoConteudoEntity, ArquivoEntity } from './entities';
 import { ArquivoConteudoSerializer, ArquivoSerializer } from './serializers';
-import { ArquivosConteudoService, ArquivosService } from './services';
+import { ArquivosService } from './services';
 
 @Module({
   imports: [
