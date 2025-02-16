@@ -49,7 +49,7 @@ class ConfigService {
         SolicitacaoArquivoEntity,
       ],
       migrationsTableName: 'MIGRATIONS',
-      migrations: ['src/migrations/*.ts'],
+      migrations: ['src/database/migrations/*.ts'],
       synchronize: false,
       ssl: this.isProduction(),
     };
