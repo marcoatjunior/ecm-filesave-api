@@ -11,6 +11,7 @@ RUN npm install
 
 # Copia código
 COPY . .
+COPY ormconfig.ts ./
 COPY .env ./
 
 # Build da aplicação

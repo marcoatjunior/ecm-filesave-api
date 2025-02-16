@@ -1,6 +1,6 @@
 {
   "name": "ecm-filesave-api",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "API de comunicação com a plataforma Alfresco ECM.",
   "author": "@marcoatjunior",
   "private": true,
